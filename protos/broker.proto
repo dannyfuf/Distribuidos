@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "servers/broker"; // specify the package directory
+package broker;
+
+message BrokerRequest {
+    int32 type = 1;
+    string request = 2;
+}
+
+message BrokerResponse {
+    string response = 1;
+}
+
+service BrokerService {
+    rpc RequestConnection (stream BrokerRequest) returns (stream BrokerResponse);
+}
