@@ -1,1 +1,0 @@
-make server name=broker

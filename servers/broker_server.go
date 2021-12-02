@@ -35,7 +35,7 @@ func check_error(e error, msg string) bool {
 
 
 func main() {
-	var ip string = get_env_var("IP_BROKER")
+	var ip string = get_env_var("IP_SERVER_1")
 	var port string = get_env_var("PORT_BROKER")
 
 	//print ip and port in the same line
