@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option go_package = "src/servers/fulcrum"; // specify the package directory
+package fulcrum;
+
+message FulcrumRequest {
+    int32 type = 1;
+    string request = 2;
+}
+
+message FulcrumResponse {
+    string response = 1;
+}
+
+service FulcrumService {
+    rpc RequestConnection (stream FulcrumRequest) returns (stream FulcrumResponse);
+}
