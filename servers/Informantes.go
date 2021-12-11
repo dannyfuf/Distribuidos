@@ -1,29 +1,18 @@
 package main
 import (
 	"fmt"
+	"log"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
-	"github.com/joho/godotenv"
 
-	"servers/broker"
+	"src/servers/broker"
+	"src/common"
+
 )
-
-func get_env_var(key string) string {
-
-	// load .env file
-	err := godotenv.Load(".env")	
-  
-	if err != nil {
-	  log.Fatalf("Error loading .env file")
-	}
-  
-	return os.Getenv(key)
-}
-
 func ConnectBroker() string{
-	var ipBroker string = get_env_var("IP_SERVER_17")
-	var portBroker string = get_env_var("BROKER_PORT")
+	var ipBroker string = common.Get_env_var("IP_SERVER_17")
+	var portBroker string = common.Get_env_var("BROKER_PORT")
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ipBroker, portBroker), grpc.WithInsecure())
 	if err != nil {
@@ -43,13 +32,13 @@ func ConnectBroker() string{
 	})
 	
 	response, _ := stream.Recv()
-	return response
+	return response.Response
 }
 
 func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 
-	ipFulcrum = ConnectBroker()
-	var portFulcrum string = get_env_var("FULCRUM_PORT")
+	ipFulcrum := ConnectBroker()
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
 
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
 
@@ -69,8 +58,8 @@ func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 
 func UpdateName(nombre_planeta string, nombre_ciudad string, nuevo_valor string) {
 	
-	ipFulcrum = ConnectBroker()
-	var portFulcrum string = get_env_var("FULCRUM_PORT")
+	ipFulcrum := ConnectBroker()
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
 
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
 	fmt.Printf("En el planeta %s, se esta actualizando el nombre de la ciudad %s a %s.\n\n", nombre_planeta, nombre_ciudad, nuevo_valor)
@@ -78,8 +67,8 @@ func UpdateName(nombre_planeta string, nombre_ciudad string, nuevo_valor string)
 
 func UpdateNumber(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 
-	ipFulcrum = ConnectBroker()
-	var portFulcrum string = get_env_var("FULCRUM_PORT")
+	ipFulcrum := ConnectBroker()
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
 
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
 	fmt.Printf("En el planeta %s, se esta actualizando la cantidad de rebeldes de la ciudad %s a %d.\n\n", nombre_planeta, nombre_ciudad, nuevo_valor)
@@ -88,8 +77,8 @@ func UpdateNumber(nombre_planeta string, nombre_ciudad string, nuevo_valor int) 
 
 func DeleteCity(nombre_planeta string, nombre_ciudad string) {
 
-	ipFulcrum = ConnectBroker()
-	var portFulcrum string = get_env_var("FULCRUM_PORT")
+	ipFulcrum := ConnectBroker()
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
 
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
 	fmt.Printf("La ciudad %s del planeta %s ha sido destruida...\n\n", nombre_ciudad, nombre_planeta)

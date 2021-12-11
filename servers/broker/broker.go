@@ -3,6 +3,7 @@ package broker
 import (
 	// "log"
 	"time"
+	"math/rand"
 
 	// "google.golang.org/grpc"
 	// "golang.org/x/net/context"
@@ -20,10 +21,11 @@ func (s * Server) RequestConnectionInf(stream BrokerService_RequestConnectionInf
 	_, err := stream.Recv()
 	common.Check_error(err, "Error receiving message")
 
+	s1 := rand.NewSource(time.Now().UnixNano())	
 	r1 := rand.New(s1)
 	rand := r1.Intn(3)
 	
-	var port string = common.Get_env_var("FULCRUM_PORT")
+	// var port string = common.Get_env_var("FULCRUM_PORT")
 	var ip string	
 	
 	if rand == 0{
@@ -40,9 +42,8 @@ func (s * Server) RequestConnectionInf(stream BrokerService_RequestConnectionInf
 	err = stream.Send(&BrokerResponse{
 		Response: ip,
 	})
-	check_error(err, "Error sending response")
-	return
-		
+	common.Check_error(err, "Error sending response")
+	return nil
 }
 
 func (s * Server) RequestConnectionLeia(stream BrokerService_RequestConnectionLeiaServer) error {
@@ -77,5 +78,6 @@ func (s * Server) RequestConnectionLeia(stream BrokerService_RequestConnectionLe
 	// 		})
 	// 		check_error(err, "Error sending response")
 	// 		time.Sleep(2 * time.Second)
-	// }	
+	// }
+	return nil	
 }

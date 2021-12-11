@@ -112,6 +112,14 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 		} else {
 			// TODO: verify the log to check if city was deleted or his name was changed
 			if _, bool1  := neighbor1_log[city]; _, bool2  := neighbor2_log[city]; bool1; bool2 {
+				// check if any is == to " sa"
+				if neighbor1_log[city] == "" || neighbor2_log[city] == "" {
+					merge_map[city] = 0
+				} else {
+					merge_map[city] = amount
+				}
+
+			}
 		}
 	}
 }
