@@ -8,14 +8,14 @@ import (
 	
 	"google.golang.org/grpc"
 
-	"servers/broker"
+	"src/servers/broker"
 	"src/common"
 )
 
 
 func main() {
-	var ip string = common.Get_env_var("IP_SERVER_1")
-	var port string = common.Get_env_var("PORT_BROKER")
+	var ip string = common.Get_env_var("IP_SERVER_17")
+	var port string = common.Get_env_var("BROKER_PORT")
 
 	//print ip and port in the same line
 	

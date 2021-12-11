@@ -13,5 +13,6 @@ message BrokerResponse {
 }
 
 service BrokerService {
-    rpc RequestConnection (stream BrokerRequest) returns (stream BrokerResponse);
+    rpc RequestConnectionInf (stream BrokerRequest) returns (stream BrokerResponse);
+    rpc RequestConnectionLeia (stream BrokerRequest) returns (stream BrokerResponse);
 }

@@ -137,9 +137,14 @@ var file_broker_proto_rawDesc = []byte{
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x2c, 0x0a, 0x0e, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x52,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f,
 	0x6e, 0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x72, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x32, 0x57, 0x0a, 0x0d, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x53, 0x65, 0x72,
-	0x76, 0x69, 0x63, 0x65, 0x12, 0x46, 0x0a, 0x11, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x43,
-	0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x15, 0x2e, 0x62, 0x72, 0x6f, 0x6b,
+	0x6e, 0x73, 0x65, 0x32, 0xa6, 0x01, 0x0a, 0x0d, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x53, 0x65,
+	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x49, 0x0a, 0x14, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x49, 0x6e, 0x66, 0x12, 0x15, 0x2e,
+	0x62, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x2e, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x16, 0x2e, 0x62, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x2e, 0x42, 0x72,
+	0x6f, 0x6b, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01,
+	0x12, 0x4a, 0x0a, 0x15, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x43, 0x6f, 0x6e, 0x6e, 0x65,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x4c, 0x65, 0x69, 0x61, 0x12, 0x15, 0x2e, 0x62, 0x72, 0x6f, 0x6b,
 	0x65, 0x72, 0x2e, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x1a, 0x16, 0x2e, 0x62, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x2e, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01, 0x42, 0x14, 0x5a, 0x12,
@@ -165,10 +170,12 @@ var file_broker_proto_goTypes = []interface{}{
 	(*BrokerResponse)(nil), // 1: broker.BrokerResponse
 }
 var file_broker_proto_depIdxs = []int32{
-	0, // 0: broker.BrokerService.RequestConnection:input_type -> broker.BrokerRequest
-	1, // 1: broker.BrokerService.RequestConnection:output_type -> broker.BrokerResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: broker.BrokerService.RequestConnectionInf:input_type -> broker.BrokerRequest
+	0, // 1: broker.BrokerService.RequestConnectionLeia:input_type -> broker.BrokerRequest
+	1, // 2: broker.BrokerService.RequestConnectionInf:output_type -> broker.BrokerResponse
+	1, // 3: broker.BrokerService.RequestConnectionLeia:output_type -> broker.BrokerResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -237,7 +244,8 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type BrokerServiceClient interface {
-	RequestConnection(ctx context.Context, opts ...grpc.CallOption) (BrokerService_RequestConnectionClient, error)
+	RequestConnectionInf(ctx context.Context, opts ...grpc.CallOption) (BrokerService_RequestConnectionInfClient, error)
+	RequestConnectionLeia(ctx context.Context, opts ...grpc.CallOption) (BrokerService_RequestConnectionLeiaClient, error)
 }
 
 type brokerServiceClient struct {
@@ -248,30 +256,61 @@ func NewBrokerServiceClient(cc grpc.ClientConnInterface) BrokerServiceClient {
 	return &brokerServiceClient{cc}
 }
 
-func (c *brokerServiceClient) RequestConnection(ctx context.Context, opts ...grpc.CallOption) (BrokerService_RequestConnectionClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_BrokerService_serviceDesc.Streams[0], "/broker.BrokerService/RequestConnection", opts...)
+func (c *brokerServiceClient) RequestConnectionInf(ctx context.Context, opts ...grpc.CallOption) (BrokerService_RequestConnectionInfClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_BrokerService_serviceDesc.Streams[0], "/broker.BrokerService/RequestConnectionInf", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &brokerServiceRequestConnectionClient{stream}
+	x := &brokerServiceRequestConnectionInfClient{stream}
 	return x, nil
 }
 
-type BrokerService_RequestConnectionClient interface {
+type BrokerService_RequestConnectionInfClient interface {
 	Send(*BrokerRequest) error
 	Recv() (*BrokerResponse, error)
 	grpc.ClientStream
 }
 
-type brokerServiceRequestConnectionClient struct {
+type brokerServiceRequestConnectionInfClient struct {
 	grpc.ClientStream
 }
 
-func (x *brokerServiceRequestConnectionClient) Send(m *BrokerRequest) error {
+func (x *brokerServiceRequestConnectionInfClient) Send(m *BrokerRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *brokerServiceRequestConnectionClient) Recv() (*BrokerResponse, error) {
+func (x *brokerServiceRequestConnectionInfClient) Recv() (*BrokerResponse, error) {
+	m := new(BrokerResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *brokerServiceClient) RequestConnectionLeia(ctx context.Context, opts ...grpc.CallOption) (BrokerService_RequestConnectionLeiaClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_BrokerService_serviceDesc.Streams[1], "/broker.BrokerService/RequestConnectionLeia", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &brokerServiceRequestConnectionLeiaClient{stream}
+	return x, nil
+}
+
+type BrokerService_RequestConnectionLeiaClient interface {
+	Send(*BrokerRequest) error
+	Recv() (*BrokerResponse, error)
+	grpc.ClientStream
+}
+
+type brokerServiceRequestConnectionLeiaClient struct {
+	grpc.ClientStream
+}
+
+func (x *brokerServiceRequestConnectionLeiaClient) Send(m *BrokerRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *brokerServiceRequestConnectionLeiaClient) Recv() (*BrokerResponse, error) {
 	m := new(BrokerResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -281,40 +320,70 @@ func (x *brokerServiceRequestConnectionClient) Recv() (*BrokerResponse, error) {
 
 // BrokerServiceServer is the server API for BrokerService service.
 type BrokerServiceServer interface {
-	RequestConnection(BrokerService_RequestConnectionServer) error
+	RequestConnectionInf(BrokerService_RequestConnectionInfServer) error
+	RequestConnectionLeia(BrokerService_RequestConnectionLeiaServer) error
 }
 
 // UnimplementedBrokerServiceServer can be embedded to have forward compatible implementations.
 type UnimplementedBrokerServiceServer struct {
 }
 
-func (*UnimplementedBrokerServiceServer) RequestConnection(BrokerService_RequestConnectionServer) error {
-	return status.Errorf(codes.Unimplemented, "method RequestConnection not implemented")
+func (*UnimplementedBrokerServiceServer) RequestConnectionInf(BrokerService_RequestConnectionInfServer) error {
+	return status.Errorf(codes.Unimplemented, "method RequestConnectionInf not implemented")
+}
+func (*UnimplementedBrokerServiceServer) RequestConnectionLeia(BrokerService_RequestConnectionLeiaServer) error {
+	return status.Errorf(codes.Unimplemented, "method RequestConnectionLeia not implemented")
 }
 
 func RegisterBrokerServiceServer(s *grpc.Server, srv BrokerServiceServer) {
 	s.RegisterService(&_BrokerService_serviceDesc, srv)
 }
 
-func _BrokerService_RequestConnection_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(BrokerServiceServer).RequestConnection(&brokerServiceRequestConnectionServer{stream})
+func _BrokerService_RequestConnectionInf_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BrokerServiceServer).RequestConnectionInf(&brokerServiceRequestConnectionInfServer{stream})
 }
 
-type BrokerService_RequestConnectionServer interface {
+type BrokerService_RequestConnectionInfServer interface {
 	Send(*BrokerResponse) error
 	Recv() (*BrokerRequest, error)
 	grpc.ServerStream
 }
 
-type brokerServiceRequestConnectionServer struct {
+type brokerServiceRequestConnectionInfServer struct {
 	grpc.ServerStream
 }
 
-func (x *brokerServiceRequestConnectionServer) Send(m *BrokerResponse) error {
+func (x *brokerServiceRequestConnectionInfServer) Send(m *BrokerResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *brokerServiceRequestConnectionServer) Recv() (*BrokerRequest, error) {
+func (x *brokerServiceRequestConnectionInfServer) Recv() (*BrokerRequest, error) {
+	m := new(BrokerRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _BrokerService_RequestConnectionLeia_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(BrokerServiceServer).RequestConnectionLeia(&brokerServiceRequestConnectionLeiaServer{stream})
+}
+
+type BrokerService_RequestConnectionLeiaServer interface {
+	Send(*BrokerResponse) error
+	Recv() (*BrokerRequest, error)
+	grpc.ServerStream
+}
+
+type brokerServiceRequestConnectionLeiaServer struct {
+	grpc.ServerStream
+}
+
+func (x *brokerServiceRequestConnectionLeiaServer) Send(m *BrokerResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *brokerServiceRequestConnectionLeiaServer) Recv() (*BrokerRequest, error) {
 	m := new(BrokerRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -328,8 +397,14 @@ var _BrokerService_serviceDesc = grpc.ServiceDesc{
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "RequestConnection",
-			Handler:       _BrokerService_RequestConnection_Handler,
+			StreamName:    "RequestConnectionInf",
+			Handler:       _BrokerService_RequestConnectionInf_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "RequestConnectionLeia",
+			Handler:       _BrokerService_RequestConnectionLeia_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},
