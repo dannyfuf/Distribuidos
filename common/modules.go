@@ -3,6 +3,7 @@ package common
 import (
 	"log"
 	"os"
+	"bufio"
 	
 	"github.com/joho/godotenv"
 
@@ -43,9 +44,7 @@ func Get_neighbors_fulcrum(n int) []string {
 func Get_file_as_string(path string) string {
 	file, err := os.Open(path)
 
-	if common.Check_error(err, "Error al abrir el archivo") {
-		return err
-	}
+	Check_error(err, "Error al abrir el archivo")
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
