@@ -1,11 +1,12 @@
 package broker
 
 import (
-	"log"
+	// "log"
 	"time"
-	"os"
 
-	"github.com/joho/godotenv"
+	// "google.golang.org/grpc"
+	// "golang.org/x/net/context"
+
 	"src/common"
 )
 
@@ -17,7 +18,7 @@ func (s * Server) RequestConnectionInf(stream BrokerService_RequestConnectionInf
 
 	// receibe message
 	_, err := stream.Recv()
-	check_error(err, "Error receiving message")
+	common.Check_error(err, "Error receiving message")
 
 	r1 := rand.New(s1)
 	rand := r1.Intn(3)

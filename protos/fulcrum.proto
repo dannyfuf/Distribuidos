@@ -13,5 +13,5 @@ message FulcrumResponse {
 }
 
 service FulcrumService {
-    rpc RequestConnection (stream FulcrumRequest) returns (stream FulcrumResponse);
+    rpc GetFile (stream FulcrumRequest) returns (stream FulcrumResponse);
 }
