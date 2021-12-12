@@ -6,18 +6,36 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      maquinas:
+        ipv4_address: 172.30.0.2
   maquina18:
     container_name: maquina18
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      maquinas:
+        ipv4_address: 172.30.0.3
   maquina19:
     container_name: maquina19
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      maquinas:
+        ipv4_address: 172.30.0.4
   maquina20:
     container_name: maquina20
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      maquinas:
+        ipv4_address: 172.30.0.5
+
+networks:
+  maquinas:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24

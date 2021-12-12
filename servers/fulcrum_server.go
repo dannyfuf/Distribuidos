@@ -7,7 +7,7 @@ import (
 	"net"
 	"strings"
 	"io/ioutil"
-	"time"
+	// "time"
 	
 	"google.golang.org/grpc"
 	"golang.org/x/net/context"
@@ -31,21 +31,6 @@ func check_data_folder() {
 			os.Mkdir("data/planets", 0777)
 		}
 	}
-}
-
-func get_string_file_as_map(text string) map[string]int {
-	// split text by |
-	cities := strings.Split(text, "|")
-
-	var planet string
-	var city string
-	var amount int
-	var cities_map = make(map[string]int)
-	for i := 0; i < len(cities); i++ {
-		fmt.Sscanf(cities[i], "%s %s %d", &planet, &city, &amount)
-		cities_map[city] = amount
-	}
-	return cities_map
 }
 
 func get_string_log_as_map(text string) map[string]string {
@@ -151,21 +136,6 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 	return merge_map
 }
 
-func write_map_to_file(merge_map map[string]int, planet_name string) {
-	log.Println("Writing map to file")
-	f, err := os.OpenFile("data/planets/"+planet_name, os.O_RDWR, 0755)
-	common.Check_error(err, "Error al abrir el archivo")
-	defer f.Close()
-
-	//split filename by .
-	name := strings.Split(planet_name, ".")[0]
-
-	// write map to file
-	for city, amount := range merge_map {
-		f.WriteString(fmt.Sprintf("%s %s %d\n", name, city, amount))
-	}
-}
-
 func merge(port string, n int) {
 	// log "Merging files"
 	log.Println("Merging files")
@@ -181,27 +151,27 @@ func merge(port string, n int) {
 		// getting files from neighbors
 		// get neighbor1
 		text_neighbor2 := get_neighbor_files(name, neighbors[1], port)
-		neighbor2 := get_string_file_as_map(text_neighbor2)
+		neighbor2 := common.Get_string_file_as_map(text_neighbor2)
 		
 		text_log_neighbor2 := get_neighbor_files("log.txt", neighbors[1], port)
 		log_neighbor2 := get_string_log_as_map(text_log_neighbor2)
 		
 		// get neighbor2
 		text_neighbor1 := get_neighbor_files(name, neighbors[0], port)
-		neighbor1 := get_string_file_as_map(text_neighbor1)
+		neighbor1 := common.Get_string_file_as_map(text_neighbor1)
 		
 		text_log_neighbor1 := get_neighbor_files("log.txt", neighbors[0], port)
 		log_neighbor1 := get_string_log_as_map(text_log_neighbor1)
 
 		// get lider file as string
-		lider := get_string_file_as_map(common.Get_file_as_string("data/planets/"+name))
+		lider := common.Get_string_file_as_map(common.Get_file_as_string("data/planets/"+name))
 		log_lider := get_string_log_as_map(common.Get_file_as_string("data/log.txt"))
 
 		// solve inconsistency
 		merge_map := solve_inconsistency(lider, log_lider, neighbor1, log_neighbor1, neighbor2, log_neighbor2)
 
 		// write merged map to file
-		write_map_to_file(merge_map, name)
+		common.Write_map_to_file(merge_map, name)
 	}
 }
 
@@ -224,14 +194,16 @@ func main() {
 	if n == 20{
 		//print "Este es el nodo lider"
 		fmt.Println("Este es el nodo lider")
-
-		go func () {
-			for {
-				merge(port, n)
-				time.Sleep(time.Second * 2)
-			}
-			}()
-		}
+		///////////////////////////////////////////////////////
+		// UNCOMMENT THIS TO MERGE FILES EVERY TWO MINUTES
+		/////////////////////////////////////////////////////////
+		// go func () {
+		// 	for {
+		// 		merge(port, n)
+		// 		time.Sleep(time.Minute * 2)
+		// 	}
+		// 	}()
+	}
 
 	// listen for requests to fulcrum
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))

@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 	"bufio"
+	"strings"
+	"fmt"
 	
 	"github.com/joho/godotenv"
 
@@ -64,4 +66,42 @@ func Get_max(array []int) int {
 		}
 	}
 	return max
+}
+
+func Get_string_file_as_map(text string) map[string]int {
+	// split text by |
+	cities := strings.Split(text, "|")
+
+	var planet string
+	var city string
+	var amount int
+	var cities_map = make(map[string]int)
+	for i := 0; i < len(cities); i++ {
+		fmt.Sscanf(cities[i], "%s %s %d", &planet, &city, &amount)
+		cities_map[city] = amount
+	}
+	return cities_map
+}
+
+func Check_file_exists(path string) bool {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
+func Write_map_to_file(merge_map map[string]int, planet_name string) {
+	log.Println("Writing map to file")	
+
+	f, err := os.OpenFile("data/planets/"+planet_name, os.O_RDWR, 0755)
+	Check_error(err, "Error al abrir el archivo")
+	defer f.Close()
+
+	//split filename by .
+	name := strings.Split(planet_name, ".")[0]
+
+	// write map to file
+	for city, amount := range merge_map {
+		f.WriteString(fmt.Sprintf("%s %s %d\n", name, city, amount))
+	}
 }

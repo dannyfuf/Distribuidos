@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 
 	"src/servers/broker"
+	"src/servers/fulcrum"
 	"src/common"
 
 )
@@ -37,22 +38,22 @@ func ConnectBroker(mensaje string) string{
 }
 
 func ConnectFulcrum(mensaje string, ip string) string{
-	var ipFulcrum ip
-	var portBroker string = common.Get_env_var("FULCRUM_PORT")
+	ipFulcrum := ip
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ipBroker, portBroker), grpc.WithInsecure())
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ipFulcrum, portFulcrum), grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
 
-	c := broker.NewBrokerServiceClient(conn)
+	c := fulcrum.NewFulcrumServiceClient(conn)
 
 	stream, err := c.RequestConnectionFulcrum(context.Background())
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	stream.Send(&broker.BrokerRequest{
+	stream.Send(&fulcrum.FulcrumRequest{
 		Type: 1, 
 		Request: mensaje,
 	})
@@ -77,8 +78,10 @@ func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 	ipFulcrum := ConnectBroker(mensaje)
 	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
-
+	
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+
+	log.Printf("respuesta %s\n",response)
 
 }
 
@@ -93,6 +96,7 @@ func UpdateName(nombre_planeta string, nombre_ciudad string, nuevo_valor string)
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+	log.Printf("respuesta %s\n",response)
 
 }
 
@@ -107,6 +111,7 @@ func UpdateNumber(nombre_planeta string, nombre_ciudad string, nuevo_valor int) 
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+	log.Printf("respuesta %s\n",response)
 
 }
 
@@ -121,6 +126,7 @@ func DeleteCity(nombre_planeta string, nombre_ciudad string) {
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+	log.Printf("respuesta %s\n",response)
 
 }
 
