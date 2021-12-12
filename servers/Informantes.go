@@ -2,6 +2,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strconv"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -10,7 +11,7 @@ import (
 	"src/common"
 
 )
-func ConnectBroker() string{
+func ConnectBroker(mensaje string) string{
 	var ipBroker string = common.Get_env_var("IP_SERVER_17")
 	var portBroker string = common.Get_env_var("BROKER_PORT")
 	var conn *grpc.ClientConn
@@ -26,9 +27,34 @@ func ConnectBroker() string{
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-
 	stream.Send(&broker.BrokerRequest{
-		Type: 1,
+		Type: 1, 
+		Request: mensaje,
+	})
+	
+	response, _ := stream.Recv()
+	return response.Response
+}
+
+func ConnectFulcrum(mensaje string, ip string) string{
+	var ipFulcrum ip
+	var portBroker string = common.Get_env_var("FULCRUM_PORT")
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ipBroker, portBroker), grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
+
+	c := broker.NewBrokerServiceClient(conn)
+
+	stream, err := c.RequestConnectionFulcrum(context.Background())
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
+	}
+	stream.Send(&broker.BrokerRequest{
+		Type: 1, 
+		Request: mensaje,
 	})
 	
 	response, _ := stream.Recv()
@@ -37,52 +63,67 @@ func ConnectBroker() string{
 
 func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 
-	ipFulcrum := ConnectBroker()
-	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	var mensaje string
 
-	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
-
-	fmt.Printf("Estoy en AddCity\nEstoy agregando la ciudad %s al planeta %s ", nombre_ciudad, nombre_planeta)
 	if nuevo_valor >= 0 {
-		fmt.Printf("con %d rebeldes\n\n", nuevo_valor)
+		mensaje = "AddCity "+nombre_planeta+" "+nombre_ciudad+" "+strconv.Itoa(nuevo_valor)
+
 	} else {
-		fmt.Printf("donde aun no hay rebeldes.\n\n")
+		mensaje = "AddCity "+nombre_planeta+" "+nombre_ciudad
 
 	}
+	fmt.Printf("%s\n", mensaje)
 
-	
+	ipFulcrum := ConnectBroker(mensaje)
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
-
+	response := ConnectFulcrum(mensaje, ipFulcrum)
 
 }
 
 func UpdateName(nombre_planeta string, nombre_ciudad string, nuevo_valor string) {
 	
-	ipFulcrum := ConnectBroker()
-	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	mensaje := "UpdateName "+nombre_planeta+" "+nombre_ciudad+" "+nuevo_valor
 
-	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
-	fmt.Printf("En el planeta %s, se esta actualizando el nombre de la ciudad %s a %s.\n\n", nombre_planeta, nombre_ciudad, nuevo_valor)
+	fmt.Printf("%s\n", mensaje)
+
+	ipFulcrum := ConnectBroker(mensaje)
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
+
+	response := ConnectFulcrum(mensaje, ipFulcrum)
+
 }
 
 func UpdateNumber(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 
-	ipFulcrum := ConnectBroker()
-	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	mensaje := "UpdateNumber "+nombre_planeta+" "+nombre_ciudad+" "+strconv.Itoa(nuevo_valor)
 
-	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
-	fmt.Printf("En el planeta %s, se esta actualizando la cantidad de rebeldes de la ciudad %s a %d.\n\n", nombre_planeta, nombre_ciudad, nuevo_valor)
+	fmt.Printf("%s\n", mensaje)
+
+	ipFulcrum := ConnectBroker(mensaje)
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
+
+	response := ConnectFulcrum(mensaje, ipFulcrum)
 
 }
 
 func DeleteCity(nombre_planeta string, nombre_ciudad string) {
 
-	ipFulcrum := ConnectBroker()
-	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	mensaje := "DeleteCity "+nombre_planeta+" "+nombre_ciudad
 
-	fmt.Printf("Se va a conectar al servidor con ip: %s:%s",ipFulcrum, portFulcrum)
-	fmt.Printf("La ciudad %s del planeta %s ha sido destruida...\n\n", nombre_ciudad, nombre_planeta)
+	fmt.Printf("%s\n", mensaje)
+
+	ipFulcrum := ConnectBroker(mensaje)
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
+
+	response := ConnectFulcrum(mensaje, ipFulcrum)
+
 }
+
 func menu() {
 	respuesta := -1
 	fmt.Printf("Bienvenido al nuevo sistema rebelde.\n")

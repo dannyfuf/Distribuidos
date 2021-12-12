@@ -3,7 +3,7 @@ package fulcrum
 import (
 	"log"
 	"os"
-	"bufio"
+	// "bufio"
 
 	// "google.golang.org/grpc"
 	// "golang.org/x/net/context"
@@ -50,20 +50,38 @@ func delete_file(file_name string) {
 func (s * Server) GetFile(stream FulcrumService_GetFileServer) error {
 	// receive file name
 	req, err := stream.Recv()
+	log.Printf("%s", req.Request)
 	if common.Check_error(err, "Error al recibir el nombre del archivo") {
 		return err
 	}
-
+	var text string
 	if req.Request == "log.txt" {
-		text := common.Get_file_as_string("data/log.txt")
+		text = common.Get_file_as_string("data/log.txt")
 	} else {
-		text := common.Get_file_as_string("data/planets" + req.Request)
+		text = common.Get_file_as_string("data/planets/" + req.Request)
 	}
 
 	// send text to client
-	err = stream.Send(&FulcrumService_GetFileResponse{Text: text})
+	err = stream.Send(&FulcrumResponse{Response: text})
 	if common.Check_error(err, "Error al enviar el texto al cliente") {
 		return err
 	}
-
+	return nil
 }
+
+func (s * Server) ConnectionBrokerFulcrum(stream FulcrumService_ConnectionBrokerFulcrumServer) error {
+	//recibir mensajes de broker, hacer consulta, y devolverlo a broker
+	return nil
+}
+
+func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnectionFulcrumServer) error {
+	//recibir mensaje del informante y manejar solicitud
+
+	
+
+
+	
+
+	return nil
+}
+

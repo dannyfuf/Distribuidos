@@ -137,14 +137,24 @@ var file_fulcrum_proto_rawDesc = []byte{
 	0x07, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x2d, 0x0a, 0x0f, 0x46, 0x75, 0x6c, 0x63,
 	0x72, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x72,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x72,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x52, 0x0a, 0x0e, 0x46, 0x75, 0x6c, 0x63, 0x72,
-	0x75, 0x6d, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x40, 0x0a, 0x07, 0x47, 0x65, 0x74,
-	0x46, 0x69, 0x6c, 0x65, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46,
-	0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e,
-	0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01, 0x42, 0x15, 0x5a, 0x13, 0x73,
-	0x72, 0x63, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x73, 0x2f, 0x66, 0x75, 0x6c, 0x63, 0x72,
-	0x75, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xf7, 0x01, 0x0a, 0x0e, 0x46, 0x75, 0x6c, 0x63,
+	0x72, 0x75, 0x6d, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x50, 0x0a, 0x17, 0x43, 0x6f,
+	0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x46, 0x75,
+	0x6c, 0x63, 0x72, 0x75, 0x6d, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e,
+	0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18,
+	0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01, 0x12, 0x51, 0x0a, 0x18,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x43, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72,
+	0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x18, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63,
+	0x72, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01, 0x12,
+	0x40, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c, 0x65, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c,
+	0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75,
+	0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30,
+	0x01, 0x42, 0x15, 0x5a, 0x13, 0x73, 0x72, 0x63, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x73,
+	0x2f, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -165,10 +175,14 @@ var file_fulcrum_proto_goTypes = []interface{}{
 	(*FulcrumResponse)(nil), // 1: fulcrum.FulcrumResponse
 }
 var file_fulcrum_proto_depIdxs = []int32{
-	0, // 0: fulcrum.FulcrumService.GetFile:input_type -> fulcrum.FulcrumRequest
-	1, // 1: fulcrum.FulcrumService.GetFile:output_type -> fulcrum.FulcrumResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: fulcrum.FulcrumService.ConnectionBrokerFulcrum:input_type -> fulcrum.FulcrumRequest
+	0, // 1: fulcrum.FulcrumService.RequestConnectionFulcrum:input_type -> fulcrum.FulcrumRequest
+	0, // 2: fulcrum.FulcrumService.GetFile:input_type -> fulcrum.FulcrumRequest
+	1, // 3: fulcrum.FulcrumService.ConnectionBrokerFulcrum:output_type -> fulcrum.FulcrumResponse
+	1, // 4: fulcrum.FulcrumService.RequestConnectionFulcrum:output_type -> fulcrum.FulcrumResponse
+	1, // 5: fulcrum.FulcrumService.GetFile:output_type -> fulcrum.FulcrumResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -237,6 +251,8 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type FulcrumServiceClient interface {
+	ConnectionBrokerFulcrum(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_ConnectionBrokerFulcrumClient, error)
+	RequestConnectionFulcrum(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_RequestConnectionFulcrumClient, error)
 	GetFile(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_GetFileClient, error)
 }
 
@@ -248,8 +264,70 @@ func NewFulcrumServiceClient(cc grpc.ClientConnInterface) FulcrumServiceClient {
 	return &fulcrumServiceClient{cc}
 }
 
+func (c *fulcrumServiceClient) ConnectionBrokerFulcrum(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_ConnectionBrokerFulcrumClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_FulcrumService_serviceDesc.Streams[0], "/fulcrum.FulcrumService/ConnectionBrokerFulcrum", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &fulcrumServiceConnectionBrokerFulcrumClient{stream}
+	return x, nil
+}
+
+type FulcrumService_ConnectionBrokerFulcrumClient interface {
+	Send(*FulcrumRequest) error
+	Recv() (*FulcrumResponse, error)
+	grpc.ClientStream
+}
+
+type fulcrumServiceConnectionBrokerFulcrumClient struct {
+	grpc.ClientStream
+}
+
+func (x *fulcrumServiceConnectionBrokerFulcrumClient) Send(m *FulcrumRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceConnectionBrokerFulcrumClient) Recv() (*FulcrumResponse, error) {
+	m := new(FulcrumResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *fulcrumServiceClient) RequestConnectionFulcrum(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_RequestConnectionFulcrumClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_FulcrumService_serviceDesc.Streams[1], "/fulcrum.FulcrumService/RequestConnectionFulcrum", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &fulcrumServiceRequestConnectionFulcrumClient{stream}
+	return x, nil
+}
+
+type FulcrumService_RequestConnectionFulcrumClient interface {
+	Send(*FulcrumRequest) error
+	Recv() (*FulcrumResponse, error)
+	grpc.ClientStream
+}
+
+type fulcrumServiceRequestConnectionFulcrumClient struct {
+	grpc.ClientStream
+}
+
+func (x *fulcrumServiceRequestConnectionFulcrumClient) Send(m *FulcrumRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceRequestConnectionFulcrumClient) Recv() (*FulcrumResponse, error) {
+	m := new(FulcrumResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *fulcrumServiceClient) GetFile(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_GetFileClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_FulcrumService_serviceDesc.Streams[0], "/fulcrum.FulcrumService/GetFile", opts...)
+	stream, err := c.cc.NewStream(ctx, &_FulcrumService_serviceDesc.Streams[2], "/fulcrum.FulcrumService/GetFile", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -281,6 +359,8 @@ func (x *fulcrumServiceGetFileClient) Recv() (*FulcrumResponse, error) {
 
 // FulcrumServiceServer is the server API for FulcrumService service.
 type FulcrumServiceServer interface {
+	ConnectionBrokerFulcrum(FulcrumService_ConnectionBrokerFulcrumServer) error
+	RequestConnectionFulcrum(FulcrumService_RequestConnectionFulcrumServer) error
 	GetFile(FulcrumService_GetFileServer) error
 }
 
@@ -288,12 +368,70 @@ type FulcrumServiceServer interface {
 type UnimplementedFulcrumServiceServer struct {
 }
 
+func (*UnimplementedFulcrumServiceServer) ConnectionBrokerFulcrum(FulcrumService_ConnectionBrokerFulcrumServer) error {
+	return status.Errorf(codes.Unimplemented, "method ConnectionBrokerFulcrum not implemented")
+}
+func (*UnimplementedFulcrumServiceServer) RequestConnectionFulcrum(FulcrumService_RequestConnectionFulcrumServer) error {
+	return status.Errorf(codes.Unimplemented, "method RequestConnectionFulcrum not implemented")
+}
 func (*UnimplementedFulcrumServiceServer) GetFile(FulcrumService_GetFileServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetFile not implemented")
 }
 
 func RegisterFulcrumServiceServer(s *grpc.Server, srv FulcrumServiceServer) {
 	s.RegisterService(&_FulcrumService_serviceDesc, srv)
+}
+
+func _FulcrumService_ConnectionBrokerFulcrum_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FulcrumServiceServer).ConnectionBrokerFulcrum(&fulcrumServiceConnectionBrokerFulcrumServer{stream})
+}
+
+type FulcrumService_ConnectionBrokerFulcrumServer interface {
+	Send(*FulcrumResponse) error
+	Recv() (*FulcrumRequest, error)
+	grpc.ServerStream
+}
+
+type fulcrumServiceConnectionBrokerFulcrumServer struct {
+	grpc.ServerStream
+}
+
+func (x *fulcrumServiceConnectionBrokerFulcrumServer) Send(m *FulcrumResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceConnectionBrokerFulcrumServer) Recv() (*FulcrumRequest, error) {
+	m := new(FulcrumRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _FulcrumService_RequestConnectionFulcrum_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FulcrumServiceServer).RequestConnectionFulcrum(&fulcrumServiceRequestConnectionFulcrumServer{stream})
+}
+
+type FulcrumService_RequestConnectionFulcrumServer interface {
+	Send(*FulcrumResponse) error
+	Recv() (*FulcrumRequest, error)
+	grpc.ServerStream
+}
+
+type fulcrumServiceRequestConnectionFulcrumServer struct {
+	grpc.ServerStream
+}
+
+func (x *fulcrumServiceRequestConnectionFulcrumServer) Send(m *FulcrumResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceRequestConnectionFulcrumServer) Recv() (*FulcrumRequest, error) {
+	m := new(FulcrumRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func _FulcrumService_GetFile_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -327,6 +465,18 @@ var _FulcrumService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*FulcrumServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ConnectionBrokerFulcrum",
+			Handler:       _FulcrumService_ConnectionBrokerFulcrum_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "RequestConnectionFulcrum",
+			Handler:       _FulcrumService_RequestConnectionFulcrum_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
 		{
 			StreamName:    "GetFile",
 			Handler:       _FulcrumService_GetFile_Handler,
