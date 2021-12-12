@@ -22,6 +22,7 @@ func check_data_folder() {
 	if os.IsNotExist(err) {
 		log.Println("Creating data folder")
 		os.Mkdir("data", 0777)
+		os.Create("data/log.txt")
 		os.Mkdir("data/planets", 0777)
 	} else {
 		// if exist, check if planets folder exist inside of data folder, if not then create it
@@ -29,6 +30,13 @@ func check_data_folder() {
 		if os.IsNotExist(err) {
 			log.Println("Creating planets folder")
 			os.Mkdir("data/planets", 0777)
+		}
+
+		// check if log.txt exist inside of data folder, if not then create it
+		_, err = os.Stat("data/log.txt")
+		if os.IsNotExist(err) {
+			log.Println("Creating log.txt")
+			os.Create("data/log.txt")
 		}
 	}
 }
@@ -136,6 +144,33 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 	return merge_map
 }
 
+func send_merged_file(file string, planet_name string, ip string) {
+	// conect to neighbor as client
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
+	common.Check_error(err, "Error al crear la conexion con el vecino")
+	defer conn.Close()
+
+	// create client
+	client := fulcrum.NewFulcrumServiceClient(conn)
+	stream, err := client.SendFile(context.Background())
+
+	// send planet name to neighbor
+	err = stream.Send(&fulcrum.FulcrumRequest{Type: 10, Request: planet_name})
+	common.Check_error(err, "Error al enviar el planeta al servidor vecino. ip: "+ip)
+
+	// send file name to neighbor
+	err = stream.Send(&fulcrum.FulcrumRequest{Type: 10, Request: file})
+	common.Check_error(err, "Error al enviar el archivo al servidor vecino. ip: "+ip)
+
+	// receive response from neighbor
+	response, err := stream.Recv()
+	common.Check_error(err, "Error al recibir la respuesta del servidor vecino. ip: "+ip)
+
+	if response.Response != "OK" {
+		log.Fatal("Error al enviar el archivo al servidor vecino. ip: "+ip)
+	}
+}
+
 func merge(port string, n int) {
 	// log "Merging files"
 	log.Println("Merging files")
@@ -172,6 +207,10 @@ func merge(port string, n int) {
 
 		// write merged map to file
 		common.Write_map_to_file(merge_map, name)
+
+		merged := common.Get_file_as_string("data/planets/"+name)
+		send_merged_file(merged, name, common.Get_env_var("IP_SERVER_18"))
+		send_merged_file(merged, name, common.Get_env_var("IP_SERVER_19"))
 	}
 }
 

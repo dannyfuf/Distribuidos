@@ -16,4 +16,5 @@ service FulcrumService {
     rpc ConnectionBrokerFulcrum (stream FulcrumRequest) returns (stream FulcrumResponse);
     rpc RequestConnectionFulcrum (stream FulcrumRequest) returns (stream FulcrumResponse);
     rpc GetFile (stream FulcrumRequest) returns (stream FulcrumResponse);
+    rpc SendFile (stream FulcrumRequest) returns (stream FulcrumResponse);
 }
