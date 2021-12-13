@@ -106,11 +106,13 @@ func Write_map_to_file(merge_map map[string]int, planet_name string) {
 	}
 }
 
-func Append_line_to_file(line string, filename string) {
-	f, err := os.OpenFile("data/planets/"+filename, os.O_RDWR, 0755)
+func Append_line_to_file(line string, path string) {
+	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	Check_error(err, "Error al abrir el archivo")
+
 	defer f.Close()
 
-	// write map to file
-	f.WriteString(fmt.Sprintf("%s", line))
+	
+	_, err = f.WriteString(line+"\n")
+	Check_error(err, "Error al escribir en el archivo")
 }

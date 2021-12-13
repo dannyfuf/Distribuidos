@@ -7,7 +7,7 @@ import (
 	"net"
 	"strings"
 	"io/ioutil"
-	// "time"
+	"time"
 	
 	"google.golang.org/grpc"
 	"golang.org/x/net/context"
@@ -96,6 +96,19 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 	// merge maps
 	merge_map := make(map[string]int)
 
+	fmt.Println("-------------------------------------")
+	//print neighbor1 map
+	for key, value := range neighbor1 {
+		fmt.Printf("%s: %s\n", key, value)
+	}
+	fmt.Println("-------------------------------------")
+	//print neighbor2 map
+	for key, value := range neighbor2 {
+		fmt.Printf("%s: %s\n", key, value)
+	}
+	fmt.Println("-------------------------------------")
+
+	fmt.Println("Solving inconsistency lider")
 	// add lider delta
 	for city, amount := range lider { // {'melipilla': 1}
 		_, bool1 := neighbor1[city]
@@ -122,6 +135,7 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 		}
 	}
 
+	fmt.Println("Solving inconsistency neighbor1")
 	// add neighbor1 delta
 	for city, amount := range neighbor1 { // {'melipilla': 1}
 		if _, bool2 := merge_map[city]; !bool2 {
@@ -134,6 +148,7 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 		}
 	}
 
+	fmt.Println("Solving inconsistency neighbor2")
 	// add neighbor2 delta
 	for city, amount := range neighbor2 {
 		if _, bool1 := merge_map[city]; !bool1 {
@@ -169,6 +184,16 @@ func send_merged_file(file string, planet_name string, ip string) {
 	if response.Response != "OK" {
 		log.Fatal("Error al enviar el archivo al servidor vecino. ip: "+ip)
 	}
+}
+
+func get_planet_list(ip string) []string {
+	// conect to neighbor as client
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
+	common.Check_error(err, "Error al crear la conexion con el vecino")
+	defer conn.Close()
+
+	
+
 }
 
 func merge(port string, n int) {
@@ -233,15 +258,13 @@ func main() {
 	if n == 20{
 		//print "Este es el nodo lider"
 		fmt.Println("Este es el nodo lider")
-		///////////////////////////////////////////////////////
-		// UNCOMMENT THIS TO MERGE FILES EVERY TWO MINUTES
-		/////////////////////////////////////////////////////////
-		// go func () {
-		// 	for {
-		// 		merge(port, n)
-		// 		time.Sleep(time.Minute * 2)
-		// 	}
-		// 	}()
+		go func () {
+			for {
+				log.Println("Merging files")
+				merge(port, n)
+				time.Sleep(time.Minute * 2)
+			}
+		}()
 	}
 
 	// listen for requests to fulcrum

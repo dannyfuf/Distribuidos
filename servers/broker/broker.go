@@ -61,7 +61,6 @@ func (s * Server) RequestConnectionInf(stream BrokerService_RequestConnectionInf
 	} else if rand == 2{
 		ip = common.Get_env_var("IP_SERVER_20")
 	}
-	ip = common.Get_env_var("IP_SERVER_20")
 	// send response
 	err = stream.Send(&BrokerResponse{
 		Response: ip,

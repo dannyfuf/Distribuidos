@@ -121,6 +121,7 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 		if _, ok := planet_map[city]; !ok {
 			tmp, _ := strconv.Atoi(opt)
 			planet_map[city] = tmp
+			common.Append_line_to_file(req.Request, "data/log.txt")
 		}
 		
 	} else if command == "UpdateName" && file_exist {
@@ -128,11 +129,13 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 			tmp := planet_map[city]
 			delete(planet_map, city)
 			planet_map[opt] = tmp
+			common.Append_line_to_file(req.Request, "data/log.txt")
 		}
 
 	} else if command == "UpdateNumber" && file_exist {
 		if _, bool1 := planet_map[city]; bool1 {
 			planet_map[city], _ = strconv.Atoi(opt)
+			common.Append_line_to_file(req.Request, "data/log.txt")
 		}
 	} else if command == "DeleteCity" && file_exist {
 		if _, bool1 := planet_map[city]; bool1 {
@@ -140,8 +143,8 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 			_, err := os.Create("data/planets/" + planet+".txt")
 			common.Check_error(err, "Error al crear el archivo")
 			delete(planet_map, city)
+			common.Append_line_to_file(req.Request, "data/log.txt")
 		}
-
 	}
 
 	//pritn map

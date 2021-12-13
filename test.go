@@ -36,7 +36,7 @@ func main() {
 
 	defer f.Close()
 
-	line := "This is a test"
+	line := "This is a test\n"
 	if _, err = f.WriteString(line); err != nil {
 		panic(err)
 	}
