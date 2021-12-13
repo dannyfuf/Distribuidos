@@ -12,26 +12,27 @@ import (
 	"src/common"
 	// "src/servers/fulcrum"
 )
-func checkVector(x int, y int, z int){
+func checkVector(x int, y int, z int) int{
 	s1 := rand.NewSource(time.Now().UnixNano())	
 	r1 := rand.New(s1)
+	var election int
 	if x == y && x == z {
-		rand := r1.Intn(3)
-		return rand
+		election= r1.Intn(3)
+		return election
 
 	} else if x == y && x > z{
-		rand := r1.Intn(2)
+		election = r1.Intn(2)
 
 	} else if x == z && x > y{
-		rand := r1.Intn(2)
-		if rand == 0{
+		election := r1.Intn(2)
+		if election == 0{
 			return 0
 		} else {
 			return 2
 		}
 
 	} else if y == z && x < y {
-		rand := r1.Intn(2) + 1
+		election = r1.Intn(2) + 1
 
 	} else if x > y && x > z {
 		return 0
@@ -42,6 +43,7 @@ func checkVector(x int, y int, z int){
 	} else { //z > x && z > y
 		return 2
 	}
+	return 0
 }
 // func ConnectFulcrum (mensaje string) string{
 // 	var ipFulcrum string = common.Get_env_var("IP_SERVER_20")
