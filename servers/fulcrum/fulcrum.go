@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 	// "bufio"
 
 	// "google.golang.org/grpc"
@@ -13,15 +14,10 @@ import (
 	"src/common"
 )
 
-
 type Server struct {
-	// clocks		map[string][]int
+	Relojes  map[string][]int
+	N_server int
 }
-
-
-// func (s * Server) RequestConnection(stream FulcrumService_RequestConnectionServer) error {
-// 	return nil
-// }
 
 func (s * Server) SendFile(stream FulcrumService_SendFileServer) error {
 	
@@ -29,6 +25,10 @@ func (s * Server) SendFile(stream FulcrumService_SendFileServer) error {
 	planet, err := stream.Recv()
 	if common.Check_error(err, "Error al recibir el archivo") {
 		return err
+	}
+
+	if planet.Request == "" {
+		return nil
 	}
 
 	// receive file
@@ -80,7 +80,32 @@ func (s * Server) GetFile(stream FulcrumService_GetFileServer) error {
 }
 
 func (s * Server) ConnectionBrokerFulcrum(stream FulcrumService_ConnectionBrokerFulcrumServer) error {
-	//recibir mensajes de broker, hacer consulta, y devolverlo a broker
+	req, err := stream.Recv()
+	req_split := strings.Split(req.Request, " ")
+
+	if common.Check_file_exists("data/planets/" + req_split[0] + ".txt") {
+		text := common.Get_file_as_string("data/planets/" + req_split[0] + ".txt")
+		planet_map := common.Get_string_file_as_map(text)	
+
+		if _, ok := planet_map[req_split[1]]; ok {
+			err = stream.Send(&FulcrumResponse{
+				Response: strconv.Itoa(planet_map[req_split[1]]),
+			})
+			common.Check_error(err, "Error enviar la cantidad de soldados al cliente")
+		} else {
+			//send -1 to client
+			err = stream.Send(&FulcrumResponse{
+				Response: "-1",
+			})
+			common.Check_error(err, "Error al notificar que la cuidad no existe")
+		}
+	} else {
+		// send -1 to client
+		err = stream.Send(&FulcrumResponse{
+			Response: "-1",
+		})
+		common.Check_error(err, "Error al notificar que el planeta no existe")
+	}
 	return nil
 }
 
@@ -100,6 +125,10 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 	readed, _ := fmt.Sscanf(req.Request, "%s %s %s %s", &command, &planet, &city, &opt)
 	
 	file_exist := common.Check_file_exists("data/planets/" + planet+ ".txt") 
+
+	if !file_exist {
+		s.Relojes[planet] = make([]int, 3)
+	}
 
 	var planet_map map[string]int
 	if file_exist {
@@ -122,6 +151,7 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 			tmp, _ := strconv.Atoi(opt)
 			planet_map[city] = tmp
 			common.Append_line_to_file(req.Request, "data/log.txt")
+			s.Relojes[planet][s.N_server] += 1
 		}
 		
 	} else if command == "UpdateName" && file_exist {
@@ -130,12 +160,14 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 			delete(planet_map, city)
 			planet_map[opt] = tmp
 			common.Append_line_to_file(req.Request, "data/log.txt")
+			s.Relojes[planet][s.N_server] += 1
 		}
 
 	} else if command == "UpdateNumber" && file_exist {
 		if _, bool1 := planet_map[city]; bool1 {
 			planet_map[city], _ = strconv.Atoi(opt)
 			common.Append_line_to_file(req.Request, "data/log.txt")
+			s.Relojes[planet][s.N_server] += 1
 		}
 	} else if command == "DeleteCity" && file_exist {
 		if _, bool1 := planet_map[city]; bool1 {
@@ -144,18 +176,17 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 			common.Check_error(err, "Error al crear el archivo")
 			delete(planet_map, city)
 			common.Append_line_to_file(req.Request, "data/log.txt")
+			s.Relojes[planet][s.N_server] += 1
 		}
-	}
-
-	//pritn map
-	for key, value := range planet_map {
-		fmt.Printf("%s: %d\n", key, value)
 	}
 
 	// Write planet file
 	common.Write_map_to_file(planet_map, planet+".txt")
 
-	//respuesta a infitrados
+	// print s.Relojes
+	for planet, relojes := range s.Relojes {
+		fmt.Printf("%s: %v\n", planet, relojes)
+	}
 
 	err = stream.Send(&FulcrumResponse{
 		Response: "he vuelto",
@@ -165,3 +196,78 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 	return nil
 }
 
+func (s * Server) GetFileList(stream FulcrumService_GetFileListServer) error {
+	req, err := stream.Recv()
+	if common.Check_error(err, "Error al recibir el nombre del archivo") {
+		return err
+	}
+
+	if req.Type == 11 {
+		// create a list of files
+		file_list := common.Create_file_list("data/planets/")
+		// send list to client
+		err = stream.Send(&FulcrumResponse{
+			Response: strings.Join(file_list, ","),
+		})
+		if common.Check_error(err, "Error al enviar el texto al cliente") {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s * Server) GetClock(stream FulcrumService_GetClockServer) error {
+	req, err := stream.Recv()
+	fmt.Printf("\nSolicitando planeta: %s\n", req.Request)
+	if common.Check_error(err, "Error al recibir el nombre del archivo") {
+		return err
+	}
+
+	req_split := strings.Split(req.Request, ".")
+	if _, ok := s.Relojes[req_split[0]]; ok {
+		// split req.Request by "."
+		clock := common.Array_as_string(s.Relojes[req_split[0]])
+
+		fmt.Printf("------------------------------------------\nEnviando Reloj: %s\n", clock)
+
+		err = stream.Send(&FulcrumResponse{
+			Response: clock,
+		})
+		if common.Check_error(err, "Error al enviar el texto al cliente") {
+			return err
+		}
+	} else {
+		err = stream.Send(&FulcrumResponse{
+			Response: "",
+		})
+		if common.Check_error(err, "Error al enviar el texto al cliente") {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s * Server) SendClock(stream FulcrumService_SendClockServer) error {
+	req, err := stream.Recv()
+	if common.Check_error(err, "Error al recibir el nombre del archivo") {
+		return err
+	}
+
+	req2, err := stream.Recv()
+	if common.Check_error(err, "Error al recibir el nombre del archivo") {
+		return err
+	}
+	fmt.Printf("------------------------------------------\nRecibiendo Reloj de %s: %s\n", strings.Split(req.Request, ".")[0], req2.Request)
+	clock_array := common.String_as_array(req2.Request)
+
+	req_split := strings.Split(req.Request, ".")
+	s.Relojes[req_split[0]] = clock_array
+
+	fmt.Println("-------------------- Nuevo reloj ----------------------\n")
+	for planet, relojes := range s.Relojes {
+		fmt.Printf("%s: %v\n", planet, relojes)
+	}
+
+	return nil
+}

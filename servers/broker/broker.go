@@ -3,14 +3,14 @@ package broker
 import (
 	"log"
 	"time"
-	// "fmt"
+	"fmt"
 	"math/rand"
 
-	// "google.golang.org/grpc"
-	// "golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"golang.org/x/net/context"
 
 	"src/common"
-	// "src/servers/fulcrum"
+	"src/servers/fulcrum"
 )
 func checkVector(x int, y int, z int) int{
 	s1 := rand.NewSource(time.Now().UnixNano())	
@@ -45,30 +45,30 @@ func checkVector(x int, y int, z int) int{
 	}
 	return 0
 }
-// func ConnectFulcrum (mensaje string) string{
-// 	var ipFulcrum string = common.Get_env_var("IP_SERVER_20")
-// 	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
-// 	var conn *grpc.ClientConn
-// 	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ipBroker, portBroker), grpc.WithInsecure())
-// 	if err != nil {
-// 		log.Fatalf("did not connect: %s", err)
-// 	}
-// 	defer conn.Close()
+func ConnectFulcrum (mensaje string) string{
+	var ipFulcrum string = common.Get_env_var("IP_SERVER_20")
+	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ipFulcrum, portFulcrum), grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %s", err)
+	}
+	defer conn.Close()
 
-// 	c := fulcrum.NewBrokerServiceClient(conn)
+	c := fulcrum.NewFulcrumServiceClient(conn)
 
-// 	stream, err := c.ConnectionBrokerFulcrum(context.Background())
-// 	if err != nil {
-// 		log.Fatalf("Error when calling SayHello: %s", err)
-// 	}
-// 	stream.Send(&broker.BrokerRequest{
-// 		Type: 1, 
-// 		Request: mensaje,
-// 	})
+	stream, err := c.ConnectionBrokerFulcrum(context.Background())
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
+	}
+	stream.Send(&fulcrum.FulcrumRequest{
+		Type: 1, 
+		Request: mensaje,
+	})
 	
-// 	response, _ := stream.Recv()
-// 	return response.Response
-//}
+	response, _ := stream.Recv()
+	return response.Response
+}
 
 type Server struct {
 }
@@ -108,8 +108,8 @@ func (s * Server) RequestConnectionLeia(stream BrokerService_RequestConnectionLe
 	peticion := req.Request
 	common.Check_error(err, "Error receiving message")
 	log.Printf("Request: %s\n", peticion)
-	var answer string = "0"
-	//answer = ConnectFulcrum (mensaje string)
+	var answer string
+	answer = ConnectFulcrum (peticion)
 
 	err = stream.Send(&BrokerResponse{
 		Response: answer,

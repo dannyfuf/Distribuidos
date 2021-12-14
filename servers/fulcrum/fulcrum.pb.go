@@ -137,7 +137,7 @@ var file_fulcrum_proto_rawDesc = []byte{
 	0x07, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x2d, 0x0a, 0x0f, 0x46, 0x75, 0x6c, 0x63,
 	0x72, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x72,
 	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x72,
-	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xba, 0x02, 0x0a, 0x0e, 0x46, 0x75, 0x6c, 0x63,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0x87, 0x04, 0x0a, 0x0e, 0x46, 0x75, 0x6c, 0x63,
 	0x72, 0x75, 0x6d, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x50, 0x0a, 0x17, 0x43, 0x6f,
 	0x6e, 0x6e, 0x65, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x72, 0x6f, 0x6b, 0x65, 0x72, 0x46, 0x75,
 	0x6c, 0x63, 0x72, 0x75, 0x6d, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e,
@@ -157,9 +157,21 @@ var file_fulcrum_proto_rawDesc = []byte{
 	0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d,
 	0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
-	0x28, 0x01, 0x30, 0x01, 0x42, 0x15, 0x5a, 0x13, 0x73, 0x72, 0x63, 0x2f, 0x73, 0x65, 0x72, 0x76,
-	0x65, 0x72, 0x73, 0x2f, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x28, 0x01, 0x30, 0x01, 0x12, 0x44, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x46, 0x69, 0x6c, 0x65, 0x4c,
+	0x69, 0x73, 0x74, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75,
+	0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x66,
+	0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01, 0x12, 0x41, 0x0a, 0x08, 0x47, 0x65,
+	0x74, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d,
+	0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x18, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75,
+	0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30, 0x01, 0x12, 0x42, 0x0a,
+	0x09, 0x53, 0x65, 0x6e, 0x64, 0x43, 0x6c, 0x6f, 0x63, 0x6b, 0x12, 0x17, 0x2e, 0x66, 0x75, 0x6c,
+	0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x2e, 0x46, 0x75,
+	0x6c, 0x63, 0x72, 0x75, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x28, 0x01, 0x30,
+	0x01, 0x42, 0x15, 0x5a, 0x13, 0x73, 0x72, 0x63, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x73,
+	0x2f, 0x66, 0x75, 0x6c, 0x63, 0x72, 0x75, 0x6d, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -184,12 +196,18 @@ var file_fulcrum_proto_depIdxs = []int32{
 	0, // 1: fulcrum.FulcrumService.RequestConnectionFulcrum:input_type -> fulcrum.FulcrumRequest
 	0, // 2: fulcrum.FulcrumService.GetFile:input_type -> fulcrum.FulcrumRequest
 	0, // 3: fulcrum.FulcrumService.SendFile:input_type -> fulcrum.FulcrumRequest
-	1, // 4: fulcrum.FulcrumService.ConnectionBrokerFulcrum:output_type -> fulcrum.FulcrumResponse
-	1, // 5: fulcrum.FulcrumService.RequestConnectionFulcrum:output_type -> fulcrum.FulcrumResponse
-	1, // 6: fulcrum.FulcrumService.GetFile:output_type -> fulcrum.FulcrumResponse
-	1, // 7: fulcrum.FulcrumService.SendFile:output_type -> fulcrum.FulcrumResponse
-	4, // [4:8] is the sub-list for method output_type
-	0, // [0:4] is the sub-list for method input_type
+	0, // 4: fulcrum.FulcrumService.GetFileList:input_type -> fulcrum.FulcrumRequest
+	0, // 5: fulcrum.FulcrumService.GetClock:input_type -> fulcrum.FulcrumRequest
+	0, // 6: fulcrum.FulcrumService.SendClock:input_type -> fulcrum.FulcrumRequest
+	1, // 7: fulcrum.FulcrumService.ConnectionBrokerFulcrum:output_type -> fulcrum.FulcrumResponse
+	1, // 8: fulcrum.FulcrumService.RequestConnectionFulcrum:output_type -> fulcrum.FulcrumResponse
+	1, // 9: fulcrum.FulcrumService.GetFile:output_type -> fulcrum.FulcrumResponse
+	1, // 10: fulcrum.FulcrumService.SendFile:output_type -> fulcrum.FulcrumResponse
+	1, // 11: fulcrum.FulcrumService.GetFileList:output_type -> fulcrum.FulcrumResponse
+	1, // 12: fulcrum.FulcrumService.GetClock:output_type -> fulcrum.FulcrumResponse
+	1, // 13: fulcrum.FulcrumService.SendClock:output_type -> fulcrum.FulcrumResponse
+	7, // [7:14] is the sub-list for method output_type
+	0, // [0:7] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -262,6 +280,9 @@ type FulcrumServiceClient interface {
 	RequestConnectionFulcrum(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_RequestConnectionFulcrumClient, error)
 	GetFile(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_GetFileClient, error)
 	SendFile(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_SendFileClient, error)
+	GetFileList(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_GetFileListClient, error)
+	GetClock(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_GetClockClient, error)
+	SendClock(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_SendClockClient, error)
 }
 
 type fulcrumServiceClient struct {
@@ -396,12 +417,108 @@ func (x *fulcrumServiceSendFileClient) Recv() (*FulcrumResponse, error) {
 	return m, nil
 }
 
+func (c *fulcrumServiceClient) GetFileList(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_GetFileListClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_FulcrumService_serviceDesc.Streams[4], "/fulcrum.FulcrumService/GetFileList", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &fulcrumServiceGetFileListClient{stream}
+	return x, nil
+}
+
+type FulcrumService_GetFileListClient interface {
+	Send(*FulcrumRequest) error
+	Recv() (*FulcrumResponse, error)
+	grpc.ClientStream
+}
+
+type fulcrumServiceGetFileListClient struct {
+	grpc.ClientStream
+}
+
+func (x *fulcrumServiceGetFileListClient) Send(m *FulcrumRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceGetFileListClient) Recv() (*FulcrumResponse, error) {
+	m := new(FulcrumResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *fulcrumServiceClient) GetClock(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_GetClockClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_FulcrumService_serviceDesc.Streams[5], "/fulcrum.FulcrumService/GetClock", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &fulcrumServiceGetClockClient{stream}
+	return x, nil
+}
+
+type FulcrumService_GetClockClient interface {
+	Send(*FulcrumRequest) error
+	Recv() (*FulcrumResponse, error)
+	grpc.ClientStream
+}
+
+type fulcrumServiceGetClockClient struct {
+	grpc.ClientStream
+}
+
+func (x *fulcrumServiceGetClockClient) Send(m *FulcrumRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceGetClockClient) Recv() (*FulcrumResponse, error) {
+	m := new(FulcrumResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *fulcrumServiceClient) SendClock(ctx context.Context, opts ...grpc.CallOption) (FulcrumService_SendClockClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_FulcrumService_serviceDesc.Streams[6], "/fulcrum.FulcrumService/SendClock", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &fulcrumServiceSendClockClient{stream}
+	return x, nil
+}
+
+type FulcrumService_SendClockClient interface {
+	Send(*FulcrumRequest) error
+	Recv() (*FulcrumResponse, error)
+	grpc.ClientStream
+}
+
+type fulcrumServiceSendClockClient struct {
+	grpc.ClientStream
+}
+
+func (x *fulcrumServiceSendClockClient) Send(m *FulcrumRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceSendClockClient) Recv() (*FulcrumResponse, error) {
+	m := new(FulcrumResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // FulcrumServiceServer is the server API for FulcrumService service.
 type FulcrumServiceServer interface {
 	ConnectionBrokerFulcrum(FulcrumService_ConnectionBrokerFulcrumServer) error
 	RequestConnectionFulcrum(FulcrumService_RequestConnectionFulcrumServer) error
 	GetFile(FulcrumService_GetFileServer) error
 	SendFile(FulcrumService_SendFileServer) error
+	GetFileList(FulcrumService_GetFileListServer) error
+	GetClock(FulcrumService_GetClockServer) error
+	SendClock(FulcrumService_SendClockServer) error
 }
 
 // UnimplementedFulcrumServiceServer can be embedded to have forward compatible implementations.
@@ -419,6 +536,15 @@ func (*UnimplementedFulcrumServiceServer) GetFile(FulcrumService_GetFileServer) 
 }
 func (*UnimplementedFulcrumServiceServer) SendFile(FulcrumService_SendFileServer) error {
 	return status.Errorf(codes.Unimplemented, "method SendFile not implemented")
+}
+func (*UnimplementedFulcrumServiceServer) GetFileList(FulcrumService_GetFileListServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetFileList not implemented")
+}
+func (*UnimplementedFulcrumServiceServer) GetClock(FulcrumService_GetClockServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetClock not implemented")
+}
+func (*UnimplementedFulcrumServiceServer) SendClock(FulcrumService_SendClockServer) error {
+	return status.Errorf(codes.Unimplemented, "method SendClock not implemented")
 }
 
 func RegisterFulcrumServiceServer(s *grpc.Server, srv FulcrumServiceServer) {
@@ -529,6 +655,84 @@ func (x *fulcrumServiceSendFileServer) Recv() (*FulcrumRequest, error) {
 	return m, nil
 }
 
+func _FulcrumService_GetFileList_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FulcrumServiceServer).GetFileList(&fulcrumServiceGetFileListServer{stream})
+}
+
+type FulcrumService_GetFileListServer interface {
+	Send(*FulcrumResponse) error
+	Recv() (*FulcrumRequest, error)
+	grpc.ServerStream
+}
+
+type fulcrumServiceGetFileListServer struct {
+	grpc.ServerStream
+}
+
+func (x *fulcrumServiceGetFileListServer) Send(m *FulcrumResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceGetFileListServer) Recv() (*FulcrumRequest, error) {
+	m := new(FulcrumRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _FulcrumService_GetClock_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FulcrumServiceServer).GetClock(&fulcrumServiceGetClockServer{stream})
+}
+
+type FulcrumService_GetClockServer interface {
+	Send(*FulcrumResponse) error
+	Recv() (*FulcrumRequest, error)
+	grpc.ServerStream
+}
+
+type fulcrumServiceGetClockServer struct {
+	grpc.ServerStream
+}
+
+func (x *fulcrumServiceGetClockServer) Send(m *FulcrumResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceGetClockServer) Recv() (*FulcrumRequest, error) {
+	m := new(FulcrumRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _FulcrumService_SendClock_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(FulcrumServiceServer).SendClock(&fulcrumServiceSendClockServer{stream})
+}
+
+type FulcrumService_SendClockServer interface {
+	Send(*FulcrumResponse) error
+	Recv() (*FulcrumRequest, error)
+	grpc.ServerStream
+}
+
+type fulcrumServiceSendClockServer struct {
+	grpc.ServerStream
+}
+
+func (x *fulcrumServiceSendClockServer) Send(m *FulcrumResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *fulcrumServiceSendClockServer) Recv() (*FulcrumRequest, error) {
+	m := new(FulcrumRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _FulcrumService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "fulcrum.FulcrumService",
 	HandlerType: (*FulcrumServiceServer)(nil),
@@ -555,6 +759,24 @@ var _FulcrumService_serviceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "SendFile",
 			Handler:       _FulcrumService_SendFile_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "GetFileList",
+			Handler:       _FulcrumService_GetFileList_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "GetClock",
+			Handler:       _FulcrumService_GetClock_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "SendClock",
+			Handler:       _FulcrumService_SendClock_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

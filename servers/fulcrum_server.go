@@ -6,7 +6,7 @@ import (
 	"os"
 	"net"
 	"strings"
-	"io/ioutil"
+	// "io/ioutil"
 	"time"
 	
 	"google.golang.org/grpc"
@@ -96,17 +96,13 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 	// merge maps
 	merge_map := make(map[string]int)
 
-	fmt.Println("-------------------------------------")
-	//print neighbor1 map
 	for key, value := range neighbor1 {
 		fmt.Printf("%s: %s\n", key, value)
 	}
-	fmt.Println("-------------------------------------")
-	//print neighbor2 map
+
 	for key, value := range neighbor2 {
 		fmt.Printf("%s: %s\n", key, value)
 	}
-	fmt.Println("-------------------------------------")
 
 	fmt.Println("Solving inconsistency lider")
 	// add lider delta
@@ -131,6 +127,8 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 					merge_map[city] = amount
 				}
 
+			} else {
+				merge_map[city] = amount
 			}
 		}
 	}
@@ -192,21 +190,192 @@ func get_planet_list(ip string) []string {
 	common.Check_error(err, "Error al crear la conexion con el vecino")
 	defer conn.Close()
 
-	
+	// create fulcrum client
+	client := fulcrum.NewFulcrumServiceClient(conn)
+	stream, err := client.GetFileList(context.Background())
+	common.Check_error(err, "Error al conectar con el servidor vecino. ip: "+ip)
 
+	// ask for planet list
+	err = stream.Send(&fulcrum.FulcrumRequest{Type: 11, Request: ""})
+	common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino. ip: "+ip)
+
+	// receive response from neighbor
+	response, err := stream.Recv()
+	common.Check_error(err, "Error al recibir la respuesta del servidor vecino. ip: "+ip)
+
+	return strings.Split(response.Response, ",")
+}
+
+func create_planet_list(lider []string, neighbor1 []string, neighbor2 []string) []string {
+	// create a list with elements from lider, neighbor1 and neighbor2
+	planet_list := make([]string, 0)
+	
+	for _, element := range lider {
+		planet_list = append(planet_list, element)	
+	}
+
+	for _, element := range neighbor1 {
+		if !common.Contains(element, planet_list) {
+			planet_list = append(planet_list, element)
+		}
+	}
+
+	for _, element := range neighbor2 {
+		if !common.Contains(element, planet_list) {
+			planet_list = append(planet_list, element)
+		}
+	}
+	return planet_list
+}
+
+func get_neighbor_clock(ip string, planet string) ([]int, bool) {
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
+	common.Check_error(err, "Error al crear la conexion con el vecino")
+	defer conn.Close()
+
+	// create fulcrum client
+	client := fulcrum.NewFulcrumServiceClient(conn)
+	stream, err := client.GetClock(context.Background())
+	common.Check_error(err, "Error al conectar con el servidor vecino")
+
+	// send planet list to neighbor
+	err = stream.Send(&fulcrum.FulcrumRequest{Type: 12, Request: planet})
+	common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino")
+
+	// receive response from neighbor
+	response, err := stream.Recv()
+	common.Check_error(err, "Error al recibir la respuesta del servidor vecino")
+
+	if response.Response != "" {
+		return common.String_as_array(response.Response), true
+	} else {
+		return []int{0,0,0}, true
+	}
+	return nil
+}
+
+func merge_clocks(planet string) ([]int, bool){
+	fmt.Println("-------------- MERGIN CLOCKS --------------\n")
+	
+	for {
+		neighbor1, end1 := get_neighbor_clock(common.Get_env_var("IP_SERVER_18"), planet)
+		if end1 {
+			break
+		}
+		time.Sleep(time.Millisecond * 500)
+	}
+
+	for {
+		neighbor2, end2 := get_neighbor_clock(common.Get_env_var("IP_SERVER_19"), planet)
+		if end2 {
+			break
+		}
+		time.Sleep(time.Millisecond * 500)
+	}
+
+	for {
+		lider, end3 := get_neighbor_clock(common.Get_env_var("IP_SERVER_20"), planet)
+		if end3 {
+			break
+		}
+		time.Sleep(time.Millisecond * 500)
+	}
+
+	fmt.Printf("N1: %v\n", neighbor1)
+	fmt.Printf("N2: %v\n", neighbor2)
+	fmt.Printf("L: %v\n", lider)
+
+	merge := []int{neighbor1[0], neighbor2[1], lider[2]}
+	fmt.Printf("Merge: %v\n", merge)
+
+	return merge, true
+}
+
+func send_clock_to_neighbor(ip string, planet string, clock []int) bool{
+	// connect to neighbor as client
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
+	common.Check_error(err, "Error al crear la conexion con el vecino")
+	defer conn.Close()
+
+	// create fulcrum client
+	client := fulcrum.NewFulcrumServiceClient(conn)
+	stream, err := client.SendClock(context.Background())
+	common.Check_error(err, "Error al conectar con el servidor vecino")
+
+	// send planet list to neighbor
+	fmt.Printf("Sending planet %s to %s\n", planet, ip)
+	err = stream.Send(&fulcrum.FulcrumRequest{Type: 13, Request: planet})
+	common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino")
+
+	// send clock to neighbor
+	fmt.Printf("\nEnviando Clock: %v a: %s\n", clock, ip)
+	err = stream.Send(&fulcrum.FulcrumRequest{Type: 13, Request: common.Array_as_string(clock)})
+	common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino")
+
+	// receive response from neighbor
+	res, err := stream.Recv()
+	common.Check_error(err, "Error al recibir la respuesta del servidor vecino")
+	
+	if res.Response != "OK" {
+		return false
+	} else {
+		return true
+	}
+	return false
+}
+
+func get_clocks(planet_list []string, ip) map[string][]int {
+	// connect to neighbor as client
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
+	common.Check_error(err, "Error al crear la conexion con el vecino")
+	defer conn.Close()
+
+	// create fulcrum client
+	client := fulcrum.NewFulcrumServiceClient(conn)
+	stream, err := client.GetClock(context.Background())
+
+	clock_map := make(map[string][]int)
+
+	for _, planet := range planet_list {
+		// send planet to neighbor
+		err = stream.Send(&fulcrum.FulcrumRequest{Type: 12, Request: planet})
+		common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino")
+
+		// receive response from neighbor
+		response, err := stream.Recv()
+		common.Check_error(err, "Error al recibir la respuesta del servidor vecino")
+
+		if response.Response != "" {
+			clock_map[planet] = common.String_as_array(response.Response)
+		} else {
+			clock_map[planet] = []int{0,0,0}
+		}
+
+	}
+
+	fmt.Printf("\nSe han recibido los relojes de %s\n", ip)
+	for planet, clock := range clock_map {
+		fmt.Printf("%s: %v\n", planet, clock)
+	}
+	return clock_map
 }
 
 func merge(port string, n int) {
 	// log "Merging files"
-	log.Println("Merging files")
+	log.Println("-------------------- Merging files --------------------\n")
 
 	neighbors := common.Get_neighbors_fulcrum(n)
 
-	// get all filenames in data/planets folder
-	files, err := ioutil.ReadDir("data/planets")
-	common.Check_error(err, "Error al leer los archivos de la carpeta data/planets")
-	for i := 0; i < len(files); i++ {
-		name := files[i].Name()
+	// get planet list from neighbors
+	planets_neighbor1 := get_planet_list(common.Get_env_var("IP_SERVER_18"))
+	planets_neighbor2 := get_planet_list(common.Get_env_var("IP_SERVER_19"))
+	planets_lider := common.Create_file_list("data/planets")
+	planet_list := create_planet_list(planets_lider, planets_neighbor1, planets_neighbor2)
+
+	clocks := get_clocks(planet_list)
+
+	for i := 0; i < len(planet_list); i++ {
+		name := planet_list[i]
 
 		// getting files from neighbors
 		// get neighbor1
@@ -232,6 +401,13 @@ func merge(port string, n int) {
 
 		// write merged map to file
 		common.Write_map_to_file(merge_map, name)
+
+		// merged clock
+		merged_clock := merge_clocks(name)
+		// send to neighbor
+		send_clock_to_neighbor(neighbors[0], name, merged_clock)
+		send_clock_to_neighbor(neighbors[1], name, merged_clock)
+		send_clock_to_neighbor(common.Get_env_var("IP_SERVER_20"), name, merged_clock)
 
 		merged := common.Get_file_as_string("data/planets/"+name)
 		send_merged_file(merged, name, common.Get_env_var("IP_SERVER_18"))
@@ -260,9 +436,9 @@ func main() {
 		fmt.Println("Este es el nodo lider")
 		go func () {
 			for {
+				time.Sleep(time.Minute * 2)
 				log.Println("Merging files")
 				merge(port, n)
-				time.Sleep(time.Minute * 2)
 			}
 		}()
 	}
@@ -274,7 +450,12 @@ func main() {
 		log.Fatalf("Error: %v", err)
 	}
 
-	server := &fulcrum.Server{}
+	relojes := make(map[string][]int)
+
+	server := &fulcrum.Server{
+		Relojes: relojes,
+		N_server: n-18,
+	}
 
 	grpcServer := grpc.NewServer()
 	fulcrum.RegisterFulcrumServiceServer(grpcServer, server)

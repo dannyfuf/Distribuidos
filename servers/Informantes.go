@@ -12,6 +12,18 @@ import (
 	"src/common"
 
 )
+
+type infData struct {
+	servers []int
+	ip string
+}
+
+var Relojes = make(map[string]infData)
+
+func Save(planet string, city string, ip string, vector string){
+	Relojes[planet+" "+city] = infData{servers: common.String_as_array(vector), ip: ip}
+}
+
 func ConnectBroker(mensaje string) string{
 	var ipBroker string = common.Get_env_var("IP_SERVER_17")
 	var portBroker string = common.Get_env_var("BROKER_PORT")
@@ -63,7 +75,6 @@ func ConnectFulcrum(mensaje string, ip string) string{
 }
 
 func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
-
 	var mensaje string
 
 	if nuevo_valor >= 0 {
@@ -130,7 +141,8 @@ func DeleteCity(nombre_planeta string, nombre_ciudad string) {
 
 }
 
-func menu() {
+func menu() error{
+
 	respuesta := -1
 	fmt.Printf("Bienvenido al nuevo sistema rebelde.\n")
 	for respuesta != 0 {
@@ -139,6 +151,8 @@ func menu() {
 		fmt.Scanf("%d",&respuesta)
 
 		if respuesta == 0 {
+
+			return nil
 			
 		} else if respuesta == 1{
 			var planeta string
@@ -191,11 +205,19 @@ func menu() {
 			fmt.Printf("Seleccione una opcion valida\n")
 		}
 	}
-	return
+	return nil
 }
+
 
 func main() {
-
+	
+	//Relojes["1"] = infData{servers: []int{1, 1, 1}, ip: "1.1.1.1"}
 	menu()
+	fmt.Printf("%v\n",Relojes["Planet City"].servers)
+	fmt.Printf("%s\n",Relojes["Planet City"].ip)
+
 	fmt.Printf("Terminando programa, rebelde\n")
 }
+
+
+

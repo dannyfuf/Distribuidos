@@ -6,6 +6,8 @@ import (
 	"bufio"
 	"strings"
 	"fmt"
+	"io/ioutil"
+	"strconv"
 	
 	"github.com/joho/godotenv"
 
@@ -45,7 +47,6 @@ func Get_neighbors_fulcrum(n int) []string {
 
 func Get_file_as_string(path string) string {
 	file, err := os.Open(path)
-
 	Check_error(err, "Error al abrir el archivo")
 	defer file.Close()
 
@@ -80,6 +81,7 @@ func Get_string_file_as_map(text string) map[string]int {
 		fmt.Sscanf(cities[i], "%s %s %d", &planet, &city, &amount)
 		cities_map[city] = amount
 	}
+
 	return cities_map
 }
 
@@ -93,26 +95,68 @@ func Check_file_exists(path string) bool {
 func Write_map_to_file(merge_map map[string]int, planet_name string) {
 	log.Println("Writing map to file")	
 
-	f, err := os.OpenFile("data/planets/"+planet_name, os.O_RDWR, 0755)
-	Check_error(err, "Error al abrir el archivo")
-	defer f.Close()
+	if Check_file_exists("data/planets/"+planet_name) {
+		os.Remove("data/planets/"+planet_name)
+	}
 
-	//split filename by .
-	name := strings.Split(planet_name, ".")[0]
+	fmt.Println("CREANDO EL ARCHIVO: " + "data/planets/" + planet_name)
+	os.Create("data/planets/"+planet_name)
 
-	// write map to file
-	for city, amount := range merge_map {
-		f.WriteString(fmt.Sprintf("%s %s %d\n", name, city, amount))
+	if planet_name != "" {
+		f, err := os.OpenFile("data/planets/"+planet_name, os.O_RDWR, 0755)
+		Check_error(err, "Error al abrir el archivo al escribir el map")
+		defer f.Close()
+
+		//split filename by .
+		name := strings.Split(planet_name, ".")[0]
+
+		// write map to file
+		for city, amount := range merge_map {
+			f.WriteString(fmt.Sprintf("%s %s %d\n", name, city, amount))
+		}
 	}
 }
 
 func Append_line_to_file(line string, path string) {
 	f, err := os.OpenFile(path, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	Check_error(err, "Error al abrir el archivo")
-
 	defer f.Close()
 
-	
 	_, err = f.WriteString(line+"\n")
 	Check_error(err, "Error al escribir en el archivo")
+}
+
+func Create_file_list(path string) []string {
+	// create a list of files
+	files, err := ioutil.ReadDir(path)
+	Check_error(err, "Error al leer el directorio")
+	var file_list []string
+	for _, file := range files {
+		file_list = append(file_list, file.Name())
+	}
+	return file_list
+}
+
+func Contains(elem string, list []string) bool {
+	for _, v := range list {
+		if v == elem {
+			return true
+		}
+	}
+	return false
+}
+
+func Array_as_string(array []int) string {
+	str := fmt.Sprintf("%d,%d,%d", array[0], array[1], array[2])
+	return str
+}
+
+func String_as_array(str string) []int {
+	array := strings.Split(str, ",")
+	var int_array []int
+	for _, v := range array {
+		n, _ := strconv.Atoi(v)
+		int_array = append(int_array, n)
+	}
+	return int_array
 }
