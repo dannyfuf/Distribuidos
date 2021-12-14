@@ -96,14 +96,6 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 	// merge maps
 	merge_map := make(map[string]int)
 
-	for key, value := range neighbor1 {
-		fmt.Printf("%s: %s\n", key, value)
-	}
-
-	for key, value := range neighbor2 {
-		fmt.Printf("%s: %s\n", key, value)
-	}
-
 	fmt.Println("Solving inconsistency lider")
 	// add lider delta
 	for city, amount := range lider { // {'melipilla': 1}
@@ -228,67 +220,14 @@ func create_planet_list(lider []string, neighbor1 []string, neighbor2 []string) 
 	return planet_list
 }
 
-func get_neighbor_clock(ip string, planet string) ([]int, bool) {
-	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
-	common.Check_error(err, "Error al crear la conexion con el vecino")
-	defer conn.Close()
+func merge_clocks(lider_clock map[string][]int, neighbor1_clock map[string][]int, neighbor2_clock map[string][]int) map[string][]int {
+	fmt.Println("-------------- MERGING CLOCKS --------------\n")
+	merge_map := make(map[string][]int)
 
-	// create fulcrum client
-	client := fulcrum.NewFulcrumServiceClient(conn)
-	stream, err := client.GetClock(context.Background())
-	common.Check_error(err, "Error al conectar con el servidor vecino")
-
-	// send planet list to neighbor
-	err = stream.Send(&fulcrum.FulcrumRequest{Type: 12, Request: planet})
-	common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino")
-
-	// receive response from neighbor
-	response, err := stream.Recv()
-	common.Check_error(err, "Error al recibir la respuesta del servidor vecino")
-
-	if response.Response != "" {
-		return common.String_as_array(response.Response), true
-	} else {
-		return []int{0,0,0}, true
+	for planet, clock := range lider_clock {
+		merge_map[planet] = []int{neighbor1_clock[planet][0], neighbor2_clock[planet][1], clock[2]}
 	}
-	return nil
-}
-
-func merge_clocks(planet string) ([]int, bool){
-	fmt.Println("-------------- MERGIN CLOCKS --------------\n")
-	
-	for {
-		neighbor1, end1 := get_neighbor_clock(common.Get_env_var("IP_SERVER_18"), planet)
-		if end1 {
-			break
-		}
-		time.Sleep(time.Millisecond * 500)
-	}
-
-	for {
-		neighbor2, end2 := get_neighbor_clock(common.Get_env_var("IP_SERVER_19"), planet)
-		if end2 {
-			break
-		}
-		time.Sleep(time.Millisecond * 500)
-	}
-
-	for {
-		lider, end3 := get_neighbor_clock(common.Get_env_var("IP_SERVER_20"), planet)
-		if end3 {
-			break
-		}
-		time.Sleep(time.Millisecond * 500)
-	}
-
-	fmt.Printf("N1: %v\n", neighbor1)
-	fmt.Printf("N2: %v\n", neighbor2)
-	fmt.Printf("L: %v\n", lider)
-
-	merge := []int{neighbor1[0], neighbor2[1], lider[2]}
-	fmt.Printf("Merge: %v\n", merge)
-
-	return merge, true
+	return merge_map
 }
 
 func send_clock_to_neighbor(ip string, planet string, clock []int) bool{
@@ -303,7 +242,7 @@ func send_clock_to_neighbor(ip string, planet string, clock []int) bool{
 	common.Check_error(err, "Error al conectar con el servidor vecino")
 
 	// send planet list to neighbor
-	fmt.Printf("Sending planet %s to %s\n", planet, ip)
+	fmt.Printf("Enviando planeta %s a %s\n", planet, ip)
 	err = stream.Send(&fulcrum.FulcrumRequest{Type: 13, Request: planet})
 	common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino")
 
@@ -324,31 +263,33 @@ func send_clock_to_neighbor(ip string, planet string, clock []int) bool{
 	return false
 }
 
-func get_clocks(planet_list []string, ip) map[string][]int {
-	// connect to neighbor as client
-	conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
-	common.Check_error(err, "Error al crear la conexion con el vecino")
-	defer conn.Close()
-
-	// create fulcrum client
-	client := fulcrum.NewFulcrumServiceClient(conn)
-	stream, err := client.GetClock(context.Background())
-
+func get_clocks(planet_list []string, ip string) map[string][]int {
 	clock_map := make(map[string][]int)
 
 	for _, planet := range planet_list {
-		// send planet to neighbor
-		err = stream.Send(&fulcrum.FulcrumRequest{Type: 12, Request: planet})
-		common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino")
+
+		// connect to neighbor as client
+		conn, err := grpc.Dial(fmt.Sprintf("%s:%s", ip, common.Get_env_var("FULCRUM_PORT")), grpc.WithInsecure())
+		common.Check_error(err, "Error al crear la conexion con el vecino")
+		defer conn.Close()
+
+		// create fulcrum client
+		client := fulcrum.NewFulcrumServiceClient(conn)
+		stream, err := client.GetClock(context.Background())
+		common.Check_error(err, "Error al conectar con el servidor vecino")
+
+		err = stream.Send(&fulcrum.FulcrumRequest{Type: 13, Request: planet})
+		common.Check_error(err, "Error al enviar la peticion de planetas al servidor vecino en get_clocks")
 
 		// receive response from neighbor
 		response, err := stream.Recv()
 		common.Check_error(err, "Error al recibir la respuesta del servidor vecino")
 
+		planet_name := strings.Split(planet, ".")[0]
 		if response.Response != "" {
-			clock_map[planet] = common.String_as_array(response.Response)
+			clock_map[planet_name] = common.String_as_array(response.Response)
 		} else {
-			clock_map[planet] = []int{0,0,0}
+			clock_map[planet_name] = []int{0,0,0}
 		}
 
 	}
@@ -362,7 +303,7 @@ func get_clocks(planet_list []string, ip) map[string][]int {
 
 func merge(port string, n int) {
 	// log "Merging files"
-	log.Println("-------------------- Merging files --------------------\n")
+	fmt.Println("-------------------- Merging files --------------------\n")
 
 	neighbors := common.Get_neighbors_fulcrum(n)
 
@@ -371,8 +312,14 @@ func merge(port string, n int) {
 	planets_neighbor2 := get_planet_list(common.Get_env_var("IP_SERVER_19"))
 	planets_lider := common.Create_file_list("data/planets")
 	planet_list := create_planet_list(planets_lider, planets_neighbor1, planets_neighbor2)
+	fmt.Printf("Planetas encontrados:\n %v\n", planet_list)
 
-	clocks := get_clocks(planet_list)
+	fmt.Printf("Pidiendo relojes a los vecinos\n")
+	clocks1 := get_clocks(planet_list, common.Get_env_var("IP_SERVER_18"))
+	clocks2 := get_clocks(planet_list, common.Get_env_var("IP_SERVER_19"))
+	lider := get_clocks(planet_list, common.Get_env_var("IP_SERVER_20"))
+
+	merged_clocks := merge_clocks(lider, clocks1, clocks2)
 
 	for i := 0; i < len(planet_list); i++ {
 		name := planet_list[i]
@@ -399,15 +346,16 @@ func merge(port string, n int) {
 		// solve inconsistency
 		merge_map := solve_inconsistency(lider, log_lider, neighbor1, log_neighbor1, neighbor2, log_neighbor2)
 
-		// write merged map to file
+		// write merged file
 		common.Write_map_to_file(merge_map, name)
 
-		// merged clock
-		merged_clock := merge_clocks(name)
 		// send to neighbor
-		send_clock_to_neighbor(neighbors[0], name, merged_clock)
-		send_clock_to_neighbor(neighbors[1], name, merged_clock)
-		send_clock_to_neighbor(common.Get_env_var("IP_SERVER_20"), name, merged_clock)
+		fmt.Printf("\nEnviando relojes\n")
+		// split name by "."
+		file_name := strings.Split(name, ".")[0]
+		send_clock_to_neighbor(common.Get_env_var("IP_SERVER_18"), name, merged_clocks[file_name])
+		send_clock_to_neighbor(common.Get_env_var("IP_SERVER_19"), name, merged_clocks[file_name])
+		send_clock_to_neighbor(common.Get_env_var("IP_SERVER_20"), name, merged_clocks[file_name])
 
 		merged := common.Get_file_as_string("data/planets/"+name)
 		send_merged_file(merged, name, common.Get_env_var("IP_SERVER_18"))

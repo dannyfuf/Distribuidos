@@ -217,6 +217,7 @@ func (s * Server) GetFileList(stream FulcrumService_GetFileListServer) error {
 }
 
 func (s * Server) GetClock(stream FulcrumService_GetClockServer) error {
+	fmt.Printf("------------------------------------------\n")
 	req, err := stream.Recv()
 	fmt.Printf("\nSolicitando planeta: %s\n", req.Request)
 	if common.Check_error(err, "Error al recibir el nombre del archivo") {
@@ -228,7 +229,7 @@ func (s * Server) GetClock(stream FulcrumService_GetClockServer) error {
 		// split req.Request by "."
 		clock := common.Array_as_string(s.Relojes[req_split[0]])
 
-		fmt.Printf("------------------------------------------\nEnviando Reloj: %s\n", clock)
+		fmt.Printf("Enviando Reloj: %s\n", clock)
 
 		err = stream.Send(&FulcrumResponse{
 			Response: clock,
@@ -249,6 +250,7 @@ func (s * Server) GetClock(stream FulcrumService_GetClockServer) error {
 }
 
 func (s * Server) SendClock(stream FulcrumService_SendClockServer) error {
+	
 	req, err := stream.Recv()
 	if common.Check_error(err, "Error al recibir el nombre del archivo") {
 		return err
@@ -268,6 +270,10 @@ func (s * Server) SendClock(stream FulcrumService_SendClockServer) error {
 	for planet, relojes := range s.Relojes {
 		fmt.Printf("%s: %v\n", planet, relojes)
 	}
+
+	err = stream.Send(&FulcrumResponse{
+		Response: "OK",
+	})
 
 	return nil
 }

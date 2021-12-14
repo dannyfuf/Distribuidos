@@ -213,8 +213,8 @@ func main() {
 	
 	//Relojes["1"] = infData{servers: []int{1, 1, 1}, ip: "1.1.1.1"}
 	menu()
-	fmt.Printf("%v\n",Relojes["Planet City"].servers)
-	fmt.Printf("%s\n",Relojes["Planet City"].ip)
+	//fmt.Printf("%v\n",Relojes["Planet City"].servers)
+	//fmt.Printf("%s\n",Relojes["Planet City"].ip)
 
 	fmt.Printf("Terminando programa, rebelde\n")
 }
