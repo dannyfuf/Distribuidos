@@ -91,6 +91,7 @@ func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 	
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
 
 	log.Printf("respuesta %s\n",response)
 
@@ -107,6 +108,7 @@ func UpdateName(nombre_planeta string, nombre_ciudad string, nuevo_valor string)
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
 	log.Printf("respuesta %s\n",response)
 
 }
@@ -122,6 +124,7 @@ func UpdateNumber(nombre_planeta string, nombre_ciudad string, nuevo_valor int) 
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
 	log.Printf("respuesta %s\n",response)
 
 }
@@ -137,6 +140,7 @@ func DeleteCity(nombre_planeta string, nombre_ciudad string) {
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
+	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
 	log.Printf("respuesta %s\n",response)
 
 }

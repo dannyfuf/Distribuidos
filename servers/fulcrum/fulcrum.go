@@ -83,26 +83,30 @@ func (s * Server) ConnectionBrokerFulcrum(stream FulcrumService_ConnectionBroker
 	req, err := stream.Recv()
 	req_split := strings.Split(req.Request, " ")
 
+	if _, ok := s.Relojes[req_split[0]]; ok {
+		clock := common.Array_as_string(s.Relojes[req_split[0]])
+	}
+	
 	if common.Check_file_exists("data/planets/" + req_split[0] + ".txt") {
 		text := common.Get_file_as_string("data/planets/" + req_split[0] + ".txt")
 		planet_map := common.Get_string_file_as_map(text)	
 
 		if _, ok := planet_map[req_split[1]]; ok {
 			err = stream.Send(&FulcrumResponse{
-				Response: strconv.Itoa(planet_map[req_split[1]]),
+				Response: strconv.Itoa(planet_map[req_split[1]])+" "+clock,
 			})
 			common.Check_error(err, "Error enviar la cantidad de soldados al cliente")
 		} else {
 			//send -1 to client
 			err = stream.Send(&FulcrumResponse{
-				Response: "-1",
+				Response: "-1 ",
 			})
 			common.Check_error(err, "Error al notificar que la cuidad no existe")
 		}
 	} else {
 		// send -1 to client
 		err = stream.Send(&FulcrumResponse{
-			Response: "-1",
+			Response: "-1 ",
 		})
 		common.Check_error(err, "Error al notificar que el planeta no existe")
 	}
@@ -184,12 +188,13 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 	common.Write_map_to_file(planet_map, planet+".txt")
 
 	// print s.Relojes
-	for planet, relojes := range s.Relojes {
-		fmt.Printf("%s: %v\n", planet, relojes)
+	for planet_tmp, relojes := range s.Relojes {
+		fmt.Printf("%s: %v\n", planet_tmp, relojes)
 	}
 
+	clock := common.Array_as_string(s.Relojes[planet])
 	err = stream.Send(&FulcrumResponse{
-		Response: "he vuelto",
+		Response: clock,
 	})
 	common.Check_error(err, "Error sending response")
 

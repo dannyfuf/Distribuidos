@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"strconv"
+	"strings"
 
 	"google.golang.org/grpc"
 	"golang.org/x/net/context"
@@ -11,6 +13,17 @@ import (
 	"src/common"
 )
 
+type infData struct {
+	servers []int
+	ip string
+	cantidad int
+}
+
+var Relojes = make(map[string]infData)
+
+func Save(planet string, city string, ip string, vector string, cantidad int){
+	Relojes[planet+" "+city] = infData{servers: common.String_as_array(vector), ip: ip, cantidad: cantidad}
+}
 func GetNumberRebelds(nombre_planeta string, nombre_ciudad string) string {
 
 	fmt.Println("Solicitando informacion sobre rebeldes en " + nombre_planeta + ", en la ciudad " + nombre_ciudad)
@@ -70,8 +83,15 @@ func main(){
 			var ciudad string
 			fmt.Scanln(&ciudad)
 
-			result := GetNumberRebelds(planeta, ciudad)
-			fmt.Println(result)
+			result := "15 11,22,33"//GetNumberRebelds(planeta, ciudad)
+			result_array := strings.Split(result, " ")
+			val, _ := strconv.Atoi(result_array[0])
+			if val != "-1"{
+				Save(planeta, ciudad, common.Get_env_var("IP_SERVER_20"), result_array[1], val)
+				// fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].servers)
+				// fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].ip)
+				fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].cantidad)
+			}
 			
 		} else {
 			respuesta = -1
