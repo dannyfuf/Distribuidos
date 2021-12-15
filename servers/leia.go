@@ -86,7 +86,7 @@ func main(){
 			result := "15 11,22,33"//GetNumberRebelds(planeta, ciudad)
 			result_array := strings.Split(result, " ")
 			val, _ := strconv.Atoi(result_array[0])
-			if val != "-1"{
+			if val != -1{
 				Save(planeta, ciudad, common.Get_env_var("IP_SERVER_20"), result_array[1], val)
 				// fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].servers)
 				// fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].ip)
