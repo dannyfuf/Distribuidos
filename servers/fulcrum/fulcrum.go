@@ -11,7 +11,7 @@ import (
 	// "google.golang.org/grpc"
 	// "golang.org/x/net/context"
 
-	"src/common"
+	"lab3/src/common"
 )
 
 type Server struct {

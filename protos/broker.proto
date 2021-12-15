@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "src/servers/broker"; // specify the package directory
+option go_package = "lab3/src/servers/broker"; // specify the package directory
 package broker;
 
 message BrokerRequest {

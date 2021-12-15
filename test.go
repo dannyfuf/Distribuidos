@@ -7,7 +7,7 @@ import (
 	// "bufio"
 	// "strings"
 	// "strconv"
-	"src/common"
+	"lab3/src/common"
 )
 
 func main() {

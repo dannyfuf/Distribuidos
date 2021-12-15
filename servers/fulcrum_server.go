@@ -12,8 +12,8 @@ import (
 	"google.golang.org/grpc"
 	"golang.org/x/net/context"
 
-	"src/servers/fulcrum"
-	"src/common"
+	"lab3/src/servers/fulcrum"
+	"lab3/src/common"
 )
 
 // check if exist the data folder, if not then create it

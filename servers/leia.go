@@ -9,8 +9,8 @@ import (
 	"google.golang.org/grpc"
 	"golang.org/x/net/context"
 
-	"src/servers/broker"
-	"src/common"
+	"lab3/src/servers/broker"
+	"lab3/src/common"
 )
 
 type infData struct {
