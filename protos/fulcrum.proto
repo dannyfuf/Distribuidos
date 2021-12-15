@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "lab3/servers/fulcrum"; // specify the package directory
+option go_package = "src/servers/fulcrum"; // specify the package directory
 package fulcrum;
 
 message FulcrumRequest {

@@ -10,8 +10,8 @@ import (
 	"google.golang.org/grpc"
 	"golang.org/x/net/context"
 
-	"lab3/common"
-	"lab3/servers/fulcrum"
+	"src/common"
+	"src/servers/fulcrum"
 )
 func check_ip(ip string) string{
 	s1 := rand.NewSource(time.Now().UnixNano())	

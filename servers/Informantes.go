@@ -7,9 +7,9 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	"lab3/servers/broker"
-	"lab3/servers/fulcrum"
-	"lab3/common"
+	"src/servers/broker"
+	"src/servers/fulcrum"
+	"src/common"
 
 )
 
