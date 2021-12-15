@@ -12,5 +12,11 @@ install:
 	@apt install -y protobuf-compiler
 	@(cd servers && go mod tidy)
 
+leia:
+	@(cd servers && go run leia.go)
+
+informantes:
+	@(cd servers && go run Informantes.go)
+
 clean_data:
 	rm -rf servers/data
