@@ -54,10 +54,10 @@ func GetNumberRebelds(nombre_planeta string, nombre_ciudad string) string {
 	
 	response, _ := stream.Recv()
 
-	recep := "La cantidad de rebeldes es "+response.Response
+	//recep := "La cantidad de rebeldes es "+response.Response
 	
 	//Dependiendo de como se envie la informacion se procede a trabajarla mas o enviarla tal y como llegue
-	return recep
+	return response.Response
 
 }
 
@@ -88,9 +88,9 @@ func main(){
 			val, _ := strconv.Atoi(result_array[0])
 			if val != -1{
 				Save(planeta, ciudad, common.Get_env_var("IP_SERVER_20"), result_array[1], val)
-				// fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].servers)
-				// fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].ip)
-				fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].cantidad)
+				fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].servers)
+				fmt.Printf("%v\n",Relojes[planeta+" "+ciudad].ip)
+				fmt.Printf("La cantidad de rebeldes es: %d\n",Relojes[planeta+" "+ciudad].cantidad)
 			}
 			
 		} else {

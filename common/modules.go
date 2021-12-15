@@ -176,7 +176,7 @@ func Check_line(path string){
 	for scanner.Scan() {
 		line := scanner.Text()
 		n, _ := fmt.Sscanf(line, "%s %s %d", &planet, &city, &amount)
-		if n == 3 && city != "0" && amount != 0 {
+		if n == 3 && city != "0" {
 			lines = append(lines, line)
 		}
 	}
