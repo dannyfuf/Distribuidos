@@ -78,10 +78,10 @@ func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 	var mensaje string
 
 	if nuevo_valor >= 0 {
-		mensaje = "AddCity "+nombre_planeta+" "+nombre_ciudad+" "+strconv.Itoa(nuevo_valor)
+		mensaje = "AddCity "+nombre_planeta+" "+nombre_ciudad+" "+strconv.Itoa(nuevo_valor)+","+Relojes[nombre_planeta+" "+nombre_ciudad].ip
 
 	} else {
-		mensaje = "AddCity "+nombre_planeta+" "+nombre_ciudad
+		mensaje = "AddCity "+nombre_planeta+" "+nombre_ciudad+","+Relojes[nombre_planeta+" "+nombre_ciudad].ip
 
 	}
 	fmt.Printf("%s\n", mensaje)
@@ -93,13 +93,14 @@ func AddCity(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 	response := ConnectFulcrum(mensaje, ipFulcrum)
 	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
 
-	log.Printf("respuesta %s\n",response)
+	fmt.Printf("%s %s:\n%v\n",nombre_planeta,nombre_ciudad,Relojes[nombre_planeta+" "+nombre_ciudad].ip)
+	fmt.Printf("%v\n",Relojes[nombre_planeta+" "+nombre_ciudad].servers)
 
 }
 
 func UpdateName(nombre_planeta string, nombre_ciudad string, nuevo_valor string) {
 	
-	mensaje := "UpdateName "+nombre_planeta+" "+nombre_ciudad+" "+nuevo_valor
+	mensaje := "UpdateName "+nombre_planeta+" "+nombre_ciudad+" "+nuevo_valor+","+Relojes[nombre_planeta+" "+nombre_ciudad].ip
 
 	fmt.Printf("%s\n", mensaje)
 
@@ -108,14 +109,16 @@ func UpdateName(nombre_planeta string, nombre_ciudad string, nuevo_valor string)
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
-	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
-	log.Printf("respuesta %s\n",response)
+	Save(nombre_planeta, nuevo_valor, ipFulcrum, response)
+	delete(Relojes, nombre_planeta+" "+nombre_ciudad)
+	fmt.Printf("%s %s:\n%v\n",nombre_planeta,nuevo_valor,Relojes[nombre_planeta+" "+nuevo_valor].ip)
+	fmt.Printf("%v\n",Relojes[nombre_planeta+" "+nuevo_valor].servers)
 
 }
 
 func UpdateNumber(nombre_planeta string, nombre_ciudad string, nuevo_valor int) {
 
-	mensaje := "UpdateNumber "+nombre_planeta+" "+nombre_ciudad+" "+strconv.Itoa(nuevo_valor)
+	mensaje := "UpdateNumber "+nombre_planeta+" "+nombre_ciudad+" "+strconv.Itoa(nuevo_valor)+","+Relojes[nombre_planeta+" "+nombre_ciudad].ip
 
 	fmt.Printf("%s\n", mensaje)
 
@@ -125,13 +128,15 @@ func UpdateNumber(nombre_planeta string, nombre_ciudad string, nuevo_valor int) 
 
 	response := ConnectFulcrum(mensaje, ipFulcrum)
 	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
-	log.Printf("respuesta %s\n",response)
+
+	fmt.Printf("%s %s:\n%v\n",nombre_planeta,nombre_ciudad,Relojes[nombre_planeta+" "+nombre_ciudad].ip)
+	fmt.Printf("%v\n",Relojes[nombre_planeta+" "+nombre_ciudad].servers)
 
 }
 
 func DeleteCity(nombre_planeta string, nombre_ciudad string) {
 
-	mensaje := "DeleteCity "+nombre_planeta+" "+nombre_ciudad
+	mensaje := "DeleteCity "+nombre_planeta+" "+nombre_ciudad+","+Relojes[nombre_planeta+" "+nombre_ciudad].ip
 
 	fmt.Printf("%s\n", mensaje)
 
@@ -139,9 +144,13 @@ func DeleteCity(nombre_planeta string, nombre_ciudad string) {
 	var portFulcrum string = common.Get_env_var("FULCRUM_PORT")
 	fmt.Printf("Se va a conectar al servidor con ip: %s:%s\n\n",ipFulcrum, portFulcrum)
 
-	response := ConnectFulcrum(mensaje, ipFulcrum)
-	Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
-	log.Printf("respuesta %s\n",response)
+	//response := ConnectFulcrum(mensaje, ipFulcrum)
+	ConnectFulcrum(mensaje, ipFulcrum)
+	//Save(nombre_planeta, nombre_ciudad, ipFulcrum, response)
+	delete(Relojes, nombre_planeta+" "+nombre_ciudad)
+	fmt.Printf("La siguiente ip y reloj deberian estar vacios por eleminarlos,\n")
+	fmt.Printf("%s %s:\n%v\n",nombre_planeta,nombre_ciudad,Relojes[nombre_planeta+" "+nombre_ciudad].ip)
+	fmt.Printf("%v\n",Relojes[nombre_planeta+" "+nombre_ciudad].servers)
 
 }
 
@@ -215,7 +224,6 @@ func menu() error{
 
 func main() {
 	
-	//Relojes["1"] = infData{servers: []int{1, 1, 1}, ip: "1.1.1.1"}
 	menu()
 	//fmt.Printf("%v\n",Relojes["Planet City"].servers)
 	//fmt.Printf("%s\n",Relojes["Planet City"].ip)

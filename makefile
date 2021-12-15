@@ -11,3 +11,6 @@ install:
 	@go get -u github.com/golang/protobuf/protoc-gen-go
 	@apt install -y protobuf-compiler
 	@(cd servers && go mod tidy)
+
+clean_data:
+	rm -rf servers/data

@@ -103,37 +103,37 @@ func solve_inconsistency(lider map[string]int, lider_log map[string]string, neig
 		_, bool2 := neighbor2[city]
 		if bool1 && bool2 { // if city exist in both neighbors
 			values := []int{amount, neighbor1[city], neighbor2[city]}
-			// get max value
 			merge_map[city] = common.Get_max(values)
-		} else {
-			_, bool1 := neighbor1_log[city] 
-			_, bool2 := neighbor2_log[city]
-			if bool1 && bool2 {
-				if neighbor1_log[city] == "" || neighbor2_log[city] == "" {
-					continue
-				} else if neighbor1_log[city] != "" {
-					merge_map[neighbor1_log[city]] = neighbor1[neighbor1_log[city]]
-				} else if neighbor2_log[city] != ""  {
-					merge_map[neighbor2_log[city]] = neighbor2[neighbor2_log[city]]
-				} else {
-					merge_map[city] = amount
-				}
-
-			} else {
-				merge_map[city] = amount
+		} else if !bool1 && bool2 { // ciudad modificada en vecino 1
+			_, bool1 := neighbor1_log[city]
+			
+			if bool1 && neighbor1_log[city] != "" {
+				merge_map[neighbor1_log[city]] = neighbor1[neighbor1_log[city]]
 			}
+
+		} else if bool1 && !bool2 { // ciudad modificada en vecino 2
+			_, bool2 := neighbor2_log[city]
+			
+			if bool2 && neighbor2_log[city] != "" {
+				merge_map[neighbor2_log[city]] = neighbor2[neighbor2_log[city]]
+			}
+		} else {
+			merge_map[city] = amount
 		}
 	}
 
 	fmt.Println("Solving inconsistency neighbor1")
 	// add neighbor1 delta
 	for city, amount := range neighbor1 { // {'melipilla': 1}
-		if _, bool2 := merge_map[city]; !bool2 {
-			if _, bool1 := neighbor2[city]; bool1 {
-				values := []int{neighbor1[city], neighbor2[city]}
-				merge_map[city] = common.Get_max(values)
-			} else {
-				merge_map[city] = amount
+		_, v2 := neighbor2[city]
+		_, l_log := lider_log[city]
+		_, merge := merge_map[city]
+
+		if !merge && !v2{
+			merge_map[city] = amount
+		} else if !merge && v2 {
+			if l_log && lider_log[city] != "" {
+				merge_map[lider_log[city]] = amount
 			}
 		}
 	}
@@ -348,6 +348,7 @@ func merge(port string, n int) {
 
 		// write merged file
 		common.Write_map_to_file(merge_map, name)
+		common.Check_line("data/planets/"+name)
 
 		// send to neighbor
 		fmt.Printf("\nEnviando relojes\n")

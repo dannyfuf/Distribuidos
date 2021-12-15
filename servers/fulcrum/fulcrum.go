@@ -51,6 +51,8 @@ func (s * Server) SendFile(stream FulcrumService_SendFileServer) error {
 		return err
 	}
 
+	common.Check_line("data/planets/"+planet.Request)
+
 	os.Remove("data/log.txt")
 	os.Create("data/log.txt")
 
@@ -83,19 +85,19 @@ func (s * Server) ConnectionBrokerFulcrum(stream FulcrumService_ConnectionBroker
 	req, err := stream.Recv()
 	req_split := strings.Split(req.Request, " ")
 
-	if _, ok := s.Relojes[req_split[0]]; ok {
-		clock := common.Array_as_string(s.Relojes[req_split[0]])
-	}
 	
 	if common.Check_file_exists("data/planets/" + req_split[0] + ".txt") {
 		text := common.Get_file_as_string("data/planets/" + req_split[0] + ".txt")
 		planet_map := common.Get_string_file_as_map(text)	
-
+		
 		if _, ok := planet_map[req_split[1]]; ok {
-			err = stream.Send(&FulcrumResponse{
-				Response: strconv.Itoa(planet_map[req_split[1]])+" "+clock,
-			})
-			common.Check_error(err, "Error enviar la cantidad de soldados al cliente")
+			if _, ok := s.Relojes[req_split[0]]; ok {
+				clock := common.Array_as_string(s.Relojes[req_split[0]])
+				err = stream.Send(&FulcrumResponse{
+					Response: strconv.Itoa(planet_map[req_split[1]])+" "+clock,
+				})
+				common.Check_error(err, "Error enviar la cantidad de soldados al cliente")
+			}
 		} else {
 			//send -1 to client
 			err = stream.Send(&FulcrumResponse{
@@ -120,13 +122,16 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 	if common.Check_error(err, "Error al recibir el mensaje del informante") {
 		return err
 	}
+	
+	split_req := strings.Split(req.Request, ",")
+
 	fmt.Printf("%s\n",req.Request)
 
 	var command string
 	var planet string
 	var city string
 	var opt string
-	readed, _ := fmt.Sscanf(req.Request, "%s %s %s %s", &command, &planet, &city, &opt)
+	readed, _ := fmt.Sscanf(split_req[0], "%s %s %s %s", &command, &planet, &city, &opt)
 	
 	file_exist := common.Check_file_exists("data/planets/" + planet+ ".txt") 
 
@@ -160,11 +165,11 @@ func (s * Server) RequestConnectionFulcrum(stream FulcrumService_RequestConnecti
 		
 	} else if command == "UpdateName" && file_exist {
 		if _, bool1 := planet_map[city]; bool1 {
-			tmp := planet_map[city]
+			tmp := planet_map[city] // "cuidaa" : 1 -> int
 			delete(planet_map, city)
 			planet_map[opt] = tmp
 			common.Append_line_to_file(req.Request, "data/log.txt")
-			s.Relojes[planet][s.N_server] += 1
+			s.Relojes[planet][s.N_server] += 1 // Reloj = {"tierra": [2,2,3] }
 		}
 
 	} else if command == "UpdateNumber" && file_exist {

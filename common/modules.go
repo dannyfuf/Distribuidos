@@ -160,3 +160,37 @@ func String_as_array(str string) []int {
 	}
 	return int_array
 }
+
+func Check_line(path string){
+	// read file line by line
+	file, err := os.OpenFile(path, os.O_RDWR, 0755)
+	Check_error(err, "Error al abrir el archivo")
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+
+	var planet string
+	var city string
+	var amount int
+	var lines []string
+	for scanner.Scan() {
+		line := scanner.Text()
+		n, _ := fmt.Sscanf(line, "%s %s %d", &planet, &city, &amount)
+		if n == 3 && city != "0" && amount != 0 {
+			lines = append(lines, line)
+		}
+	}
+
+	os.Remove(path)
+	os.Create(path)
+
+	// write lines to file
+	n_file, err := os.OpenFile(path, os.O_RDWR, 0755)
+	Check_error(err, "Error al abrir el archivo")
+	defer file.Close()
+	fmt.Println("---------------------------")
+	for _, line := range lines {
+		fmt.Println(line)
+		n_file.WriteString(line+"\n")
+	}
+}
