@@ -8,8 +8,8 @@ import (
 	
 	"google.golang.org/grpc"
 
-	"lab3/src/servers/broker"
-	"lab3/src/common"
+	"lab3/servers/broker"
+	"lab3/common"
 )
 
 
